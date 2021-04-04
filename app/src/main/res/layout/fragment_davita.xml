@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragmen.DavitaFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:id="@+id/davitaViewName"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        >
+
+        <ImageView
+            android:id="@+id/buttonBack"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/ic_baseline_keyboard_arrow_left_24"
+            >
+        </ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chat With Davita"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+            android:textColor="@color/white"
+            android:layout_toRightOf="@id/buttonBack"
+            />
+
+    </RelativeLayout>
+    <WebView
+        android:id="@+id/wvDavita"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/davitaViewName"/>
+
+</RelativeLayout>

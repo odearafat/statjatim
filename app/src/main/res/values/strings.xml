@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Statistik Jatim</string>
+
+    <string-array name="indikator">
+        <item>Pertumbuhan ekonomi</item>
+        <item>Jumlah Penduduk</item>
+        <item>Jumlah Pendduk Miskin</item>
+        <item>Persentase Penduduk Miskin</item>
+        <item>Indeks Pembangunan Manusia</item>
+    </string-array>
+
+    <string-array name="periode_waktu">
+        <item>Semester 1, 2020</item>
+        <item>Maret 2020</item>
+        <item>2020</item>
+        <item>Maret,2020</item>
+        <item>2019</item>
+    </string-array>
+
+    <string-array name="nilai">
+        <item>5,23</item>
+        <item>1.025</item>
+        <item>103,5</item>
+        <item>6,23</item>
+        <item>87,5</item>
+    </string-array>
+
+    <string-array name="satuan">
+        <item>Persen</item>
+        <item>Juta Jitwa</item>
+        <item>Ribu Jiwa</item>
+        <item>Persen</item>
+        <item>-</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

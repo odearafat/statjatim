@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="wrap_content">
+
+
+        <RelativeLayout
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/bg_data_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/containerDownload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_circle_blue_small"
+                android:layout_margin="5dp">
+                <ImageButton
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="10dp"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/ic_graph"
+
+                    />
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/judulDataStatic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ekspor Jawa Timur Mei 2020 sebesar USD 1,25 Miliar, atau turun 8,25 persen"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_toRightOf="@id/containerDownload"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="35dp"
+                android:textColor="@color/colorPrimaryDark"
+                />
+
+
+
+            <RelativeLayout
+                android:id="@+id/titik2"
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:background="@drawable/bg_circle_blue_small"
+                android:layout_toRightOf="@id/bttUnduhDataStatic"
+                android:layout_below="@id/judulDataStatic"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+
+                ></RelativeLayout>
+                <TextView
+                    android:id="@+id/tglDataStatic"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="25 April 2020"
+                    android:textSize="10dp"
+                    android:layout_marginTop="5dp"
+                    android:textStyle="italic"
+                    android:padding="3dp"
+                    android:layout_below="@id/judulDataStatic"
+                    android:layout_toRightOf="@id/titik2"
+                    android:textColor="@color/orange"
+                    />
+            <RelativeLayout
+                android:id="@+id/titik1"
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:background="@drawable/bg_circle_blue_small"
+                android:layout_toRightOf="@id/tglDataStatic"
+                android:layout_below="@id/judulDataStatic"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                ></RelativeLayout>
+
+            <TextView
+                android:id="@+id/sizeDataStatic"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20MB"
+                android:textSize="10dp"
+                android:layout_marginTop="5dp"
+                android:textStyle="italic"
+                android:padding="3dp"
+                android:layout_below="@id/judulDataStatic"
+                android:layout_toRightOf="@id/titik1"
+                android:textColor="@color/orange"
+                />
+
+            <Button
+                android:id="@+id/bttUnduhDataStatic"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_below="@id/judulDataStatic"
+                android:background="@drawable/bg_circle_orange_small"
+                android:text="Unduh"
+                android:textColor="@color/white"
+                android:textSize="10dp"
+                android:layout_margin="5dp"
+                android:layout_toRightOf="@+id/containerDownload"
+                ></Button>
+                <!-- android:layout_toRightOf="@id/containerTglBrs" -->
+
+        </RelativeLayout>
+</RelativeLayout>

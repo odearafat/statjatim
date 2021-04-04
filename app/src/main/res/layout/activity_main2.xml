@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/white_ripple"
+    tools:context=".activity.MainActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@drawable/bg_purple"
+        tools:context=".activity.MainActivity">
+
+        <TextView
+            android:id="@+id/appName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Wedang"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/appName2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_toRightOf="@id/appName"
+            android:text="SUJI"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/appTambahName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/appName"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="20dp"
+            android:text="Web Data Jawa Timur Nang Saku Siji"
+            android:textColor="@color/white"
+            android:textSize="10.5sp" />
+
+        <ImageButton
+            android:id="@+id/settingButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/ic_baseline_settings_24"/>
+
+
+        <ImageButton
+            android:id="@+id/helpButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/ic_baseline_help_24"/>
+
+
+
+
+
+    </RelativeLayout>
+    <com.denzcoskun.imageslider.ImageSlider
+        android:id="@+id/slider"
+        android:layout_width="match_parent"
+        android:layout_height="210dp"
+        app:auto_cycle="true"
+        app:delay="0"
+        app:period="1000"
+        app:corner_radius="30"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/slider"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="20dp"
+        android:text="INDIKATOR STRATEGIS"
+        android:textColor="@color/colorPrimary"
+        android:textSize="15dp" />
+
+    <Button
+        android:id="@+id/bttInStratAll"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="Lihat Semua"
+        android:layout_below="@id/slider"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/bg_bttn_blue"
+        android:textColor="@color/white"
+        android:layout_marginRight="20dp"
+        android:textSize="10dp"
+
+        >
+    </Button>
+
+    <LinearLayout
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_below="@id/bttInStratAll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_data_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <View
+                android:id="@+id/logoData"
+                android:layout_height="20dp"
+                android:layout_width="20dp"
+                android:background="@drawable/ic_graph"
+                android:layout_margin="5dp"
+                />
+            <TextView
+                android:id="@+id/nmData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pertumbuhan Ekonomi"
+                android:textSize="15dp"
+                android:layout_toRightOf="@id/logoData"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/white"
+                />
+            <TextView
+                android:id="@+id/periodData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Semester 1, 2020"
+                android:textSize="10dp"
+                android:layout_below="@id/nmData"
+                android:layout_toRightOf="@id/logoData"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/blue_light"
+                />
+
+            <TextView
+                android:id="@+id/value"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="65,3"
+                android:textSize="25dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_alignParentRight="true"
+                />
+            <TextView
+                android:id="@+id/satuan"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="persen"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/value"
+                android:textSize="10dp"
+                android:textColor="@color/blue_light"
+                />
+
+        </RelativeLayout>
+
+
+
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+    <com.luseen.spacenavigation.SpaceNavigationView
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        app:active_item_color="@color/colorAccent"
+        app:centre_button_color="@color/colorPrimary"
+        app:inactive_item_color="@color/black"
+        app:space_background_color="@color/blue_light"
+        app:centre_button_icon="@drawable/logo_bps"
+        app:space_item_icon_size="20dp"
+        app:space_item_icon_only_size="@dimen/space_item_icon_only_size"
+        app:space_item_text_size="@dimen/space_item_text_default_size" >
+        <!--app:inactive_centre_button_icon_color="#FA2415"-->
+    </com.luseen.spacenavigation.SpaceNavigationView>
+
+</RelativeLayout>

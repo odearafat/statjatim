@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:id="@+id/BrsViewName"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        >
+        <ImageView
+            android:id="@+id/buttonBackBrs"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/ic_baseline_keyboard_arrow_left_24"
+            >
+        </ImageView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Berita Resmi Statistik"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+            android:textColor="@color/white"
+            android:layout_toRightOf="@id/buttonBackBrs"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/relativeLayout0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/BrsViewName"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="5dp"
+        >
+        <EditText
+            android:id="@+id/editTextFindBrs"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="20dp"
+            android:hint="Cari Publikasi.."
+            android:textColorHint="@color/white_with_alpha"
+            android:textColor="@color/colorPrimaryDark"
+            android:background="@drawable/bg_blue_search_text_field"
+            />
+        <Button
+            android:id="@+id/bttFindBrs"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:text="Cari"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_dark_blue_btt_search"
+            />
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/linear_layout"
+        android:layout_below="@id/relativeLayout0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RecycleViewListBrs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBarBrs"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        ></ProgressBar>
+
+
+
+</RelativeLayout>

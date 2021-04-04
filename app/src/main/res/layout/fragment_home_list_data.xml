@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="wrap_content">
+    <RelativeLayout
+    android:layout_marginTop="2.5dp"
+    android:layout_marginBottom="2.5dp"
+    android:background="@drawable/bg_data_list"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+        <RelativeLayout
+            android:id="@+id/logoData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_circle_blue_small"
+            android:padding="2dp">
+            <ImageView
+                android:id="@+id/contentlogoData"
+                android:layout_height="15dp"
+                android:layout_width="15dp"
+                android:background="@drawable/ic_graph"
+                android:layout_margin="5dp"
+                />
+        </RelativeLayout>
+
+    <TextView
+        android:id="@+id/nmData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pertumbuhan Ekonomi"
+        android:textSize="15dp"
+        android:layout_toRightOf="@id/logoData"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="25dp"
+        android:textColor="@color/colorPrimaryDark"
+        />
+
+    <TextView
+        android:id="@+id/value"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="65,3"
+        android:textSize="25dp"
+        android:textColor="@color/orange"
+        android:textStyle="bold"
+        android:layout_below="@+id/nmData"
+        android:layout_toRightOf="@id/logoData"
+        android:layout_marginLeft="10dp"
+        />
+    <TextView
+        android:id="@+id/satuan"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="persen"
+        android:layout_below="@id/nmData"
+        android:layout_toRightOf="@id/value"
+        android:textSize="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:textStyle="italic"
+        android:textColor="@color/colorPrimaryDark"
+        />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true">
+            <Button
+                android:id="@+id/arrow"
+                android:layout_width="20dp"
+                android:layout_height="12.9dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/ic_row_down"
+                android:backgroundTint="@color/orange"></Button>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@drawable/bg_logo_white"
+            android:layout_below="@id/value"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="5dp"
+            ></RelativeLayout>
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/line"
+            android:text="Lorem Ipsum is simplyever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book t has survived not only five centuries, . . . "
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="5dp"
+            android:textSize="12dp"
+            android:textStyle="italic"
+            android:textColor="@color/colorPrimaryDark"></TextView>
+
+</RelativeLayout>
+</RelativeLayout>
