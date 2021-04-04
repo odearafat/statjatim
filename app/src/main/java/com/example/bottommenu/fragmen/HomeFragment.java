@@ -169,7 +169,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
 
                 //So you can get the edittext value
-                String mobileNumber = "81295593414";
+                String mobileNumber = "82162900900";
                 String message = "halo";
                 boolean installed = appInstalledOrNot("com.whatsapp", v);
                 if (installed){

@@ -34,10 +34,10 @@
         app:active_centre_button_background_color="@color/colorAccent"
         app:centre_button_color="@color/colorAccent"
         app:space_background_color="@color/colorPrimary"
-        app:centre_button_icon="@drawable/logo_bps_white"
-        app:space_item_icon_size="25dp"
-        app:space_item_icon_only_size="@dimen/space_item_icon_only_size"
-        app:space_item_text_size="@dimen/space_item_text_default_size" >
+        app:centre_button_icon="@drawable/ic_beranda_white_bottom"
+        app:space_item_icon_size="100dp"
+        app:space_item_icon_only_size="100dp">
+
         <!--app:inactive_centre_button_icon_color="#FA2415"-->
     </com.luseen.spacenavigation.SpaceNavigationView>
 </RelativeLayout>

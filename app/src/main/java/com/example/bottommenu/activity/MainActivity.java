@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentManager fm;
     boolean homePressed = true, doubleBackToExitPressedOnce = false;
 
-
+    
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,16 +46,18 @@ public class MainActivity extends AppCompatActivity {
         //Navigation Bottom
         navigationView=findViewById(R.id.space);
         navigationView.initWithSaveInstanceState(savedInstanceState);
-        navigationView.addSpaceItem(new SpaceItem("", R.drawable.ic_book));
-        navigationView.addSpaceItem(new SpaceItem("", R.drawable.ic_doc));
-        navigationView.addSpaceItem(new SpaceItem("", R.drawable.ic_berita));
-        navigationView.addSpaceItem(new SpaceItem("", R.drawable.ic_graph));
+        navigationView.addSpaceItem(new SpaceItem("", R.drawable.ic_publikasi_bottom));
+        navigationView.addSpaceItem(new SpaceItem("", R.drawable.ic_berita_bottom));
+        navigationView.addSpaceItem(new SpaceItem("", R.drawable.ic_brs_bottom));
+        navigationView.addSpaceItem(new SpaceItem("", R.drawable.ic_data_bottom));
 
         navigationView.setActiveSpaceItemColor(getColor(R.color.black));
         navigationView.changeCurrentItem(-1);
         navigationView.setActiveSpaceItemColor(getColor(R.color.colorPrimaryDark));
         navigationView.setInActiveCentreButtonIconColor(getColor(R.color.colorPrimary));
         navigationView.setActiveCentreButtonIconColor(getColor(R.color.colorPrimaryDark));
+        navigationView.setSpaceItemIconSize(100);
+
 
         navigationView.setSpaceOnClickListener(new SpaceOnClickListener() {
 
