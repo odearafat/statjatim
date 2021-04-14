@@ -1,6 +1,8 @@
 package com.example.bottommenu.fragmen;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -83,6 +85,8 @@ public class PublikasiFragment extends Fragment {
         cariButton=(Button) v.findViewById(R.id.bttFindPub);
         cariEditText=(EditText) v.findViewById(R.id.editTextFindPub);
         dialogDetailPublikasi=new Dialog(this.getContext());
+
+        dialogDetailPublikasi.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
         // LinearLayoutManager is used here, this will layout the elements in a similar fashion

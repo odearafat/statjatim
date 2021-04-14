@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.PermissionChecker;
@@ -28,12 +30,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bottommenu.R;
 import com.example.bottommenu.activity.MainActivity;
+import com.example.bottommenu.interfacePackage.PublikasiHolderApi;
+import com.example.bottommenu.model.Page;
+import com.example.bottommenu.model.Publikasi;
 import com.example.bottommenu.model.PublikasiItem;
+import com.example.bottommenu.model.PublikasiView;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static androidx.core.app.ActivityCompat.requestPermissions;
 import static androidx.core.content.ContextCompat.getSystemService;
@@ -49,12 +62,14 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Publ
     ImageView detailCover;
 
 
+
     Context context;
 
     public PublikasiAdapter(Context ct, List<PublikasiItem> publikasiItems, Dialog dialogDetailPublikasis) {
         this.publikasiItemList=publikasiItems;
         context=ct;
         this.dialogDetailPublikasi=dialogDetailPublikasis;
+
 
         dialogDetailPublikasi.setContentView(R.layout.detail_publikasi);
         this.detailJudulPublikasi=dialogDetailPublikasi.findViewById(R.id.detailJudulPublikasi);
@@ -66,6 +81,7 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Publ
 
         this.detailCover=dialogDetailPublikasi.findViewById(R.id.detailCover);
         this.detailDownloadbutton=dialogDetailPublikasi.findViewById(R.id.detailBttDownload);
+
     }
 
     @NonNull
@@ -96,6 +112,58 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Publ
         holder.bttDetailPub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //JsonHolderInterfaceClass
+                Retrofit retrofit=new Retrofit.Builder().baseUrl("https://webapi.bps.go.id/v1/api/")
+                        .addConverterFactory(GsonConverterFactory.create()).build();
+                PublikasiHolderApi jsonPlaceHolderApi=retrofit.create(PublikasiHolderApi.class);
+
+                String idPub=publikasiItemList.get(position).getPub_id();
+                //354475b2d04ee5be705892c01701899d
+                Call<PublikasiView> call=jsonPlaceHolderApi.getView(
+                        "publication", "3500", "2ad01e6a21b015ea1ff8805ced02600c",
+                        "ind",idPub
+                );
+
+                //Callback
+                call.enqueue(new Callback<PublikasiView>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+
+                    @Override
+                    public void onResponse(Call<PublikasiView> call, Response<PublikasiView> response) {
+
+                        if(!response.isSuccessful()){
+                            String getResult="Code : "+response.code();
+                            return;
+                        }
+                        PublikasiView publikasiview=response.body();
+                        System.out.println("Berhasil :"+publikasiview.getData().getSize());
+
+                        detailJudulPublikasi.setText(publikasiview.getData().getTitle());
+                        detailIssn.setText("ISSN/ISBN : "+publikasiview.getData().getIssn());
+                        detailRl_date.setText("Tanggal Rilis : "+publikasiview.getData().getRl_date());
+                        detailUpdt_date.setText("Tanggal Update : "+publikasiview.getData().getSch_date());
+                        detailSize.setText("Ukuran File : "+publikasiview.getData().getSize());
+                        detailAbstract.setText(publikasiview.getData().getAbstract_pub().replace("\n", ""));
+                        //Cast to Page
+                        //Page page=new Gson().fromJson(publikasi.getData().get(0).toString(), Page.class);
+
+                        //Cast to List of Publikasi Item
+                        //publikasiItems = stringToArray(new Gson().toJson(publikasi.getData().get(1)), PublikasiItem[].class);
+
+                        //publikasiAdapter=new PublikasiAdapter(getContext(),publikasiItems, dialogDetailPublikasi, retrofit);
+                        //recyclerView.setAdapter(publikasiAdapter);
+
+                        //progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onFailure(Call<PublikasiView> call, Throwable t) {
+                        //getResult="Gagal";
+                        System.out.println("gagal");
+                        Log.d("I","Message"+t.getMessage());
+                    }
+                });
+
                 detailJudulPublikasi.setText(publikasiItemList.get(position).getTitle());
                 detailIssn.setText("ISSN/ISBN : "+publikasiItemList.get(position).getIssn());
                 detailRl_date.setText("Tanggal Rilis : "+publikasiItemList.get(position).getRl_date());

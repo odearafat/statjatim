@@ -2,17 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_circle_blue_big">
+    android:background="@drawable/bg_bttn_white">
 
     <TextView
         android:id="@+id/detailJudulPublikasi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Jawa Timur Dalam Angka "
-        android:textColor="@color/white"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="15dp"
         android:textAlignment="center"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:layout_centerHorizontal="true"></TextView>
 
     <ImageView
@@ -26,30 +26,29 @@
         />
 
     <TextView
+        android:id="@+id/detailTanggalRilis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detailJudulPublikasi"
+        android:layout_marginLeft="5dp"
         android:layout_marginRight="20dp"
-    android:id="@+id/detailTanggalRilis"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="25 Maret 2020"
-    android:textSize="12dp"
-    android:textStyle="italic"
-    android:layout_below="@id/detailJudulPublikasi"
-    android:layout_toRightOf="@id/detailCover"
-    android:layout_marginLeft="5dp"
-    android:textColor="@color/white"
-    />
+        android:layout_toRightOf="@id/detailCover"
+        android:text="Tanggal Rilis: "
+        android:textColor="@color/colorPrimary"
+        android:textSize="12dp"
+        android:textStyle="italic" />
+
     <TextView
         android:id="@+id/detailTanggalUpdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="25 Maret 2020"
-        android:textSize="12dp"
-        android:textStyle="italic"
         android:layout_below="@id/detailTanggalRilis"
-        android:layout_toRightOf="@id/detailCover"
         android:layout_marginLeft="5dp"
-        android:textColor="@color/white"
-        />
+        android:layout_toRightOf="@id/detailCover"
+        android:text="Tanggal Update :"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12dp"
+        android:textStyle="italic" />
 <!--    <RelativeLayout-->
 <!--        android:id="@+id/titik"-->
 <!--        android:layout_width="5dp"-->
@@ -70,44 +69,52 @@
         android:id="@+id/detailUkuranFile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="28 MB"
-        android:textSize="12dp"
-        android:textStyle="italic"
-        android:layout_toRightOf="@id/detailCover"
         android:layout_below="@id/detailTanggalUpdate"
-        android:textColor="@color/white"
-        />
+        android:layout_toRightOf="@id/detailCover"
+        android:text="Ukuran File"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginLeft="5dp"
+        android:textSize="12dp"
+        android:textStyle="italic" />
+
     <TextView
         android:id="@+id/detailIssn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="28 MB"
-        android:textSize="12dp"
-        android:textStyle="italic"
-        android:layout_toRightOf="@id/detailCover"
         android:layout_below="@id/detailUkuranFile"
-        android:textColor="@color/white"
-        />
+        android:layout_toRightOf="@id/detailCover"
+        android:text="ISSN/ISBN :"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginLeft="5dp"
+        android:textSize="12dp"
+        android:textStyle="italic" />
 
     <TextView
         android:id="@+id/detailAbstract"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="25 Maret 2020"
-        android:textSize="12dp"
-        android:textStyle="italic"
-        android:layout_below="@id/detailCover"
+        android:layout_below="@id/detailIssn"
         android:layout_marginLeft="5dp"
-        android:textColor="@color/white"
-        />
+        android:layout_marginRight="2dp"
+        android:layout_toRightOf="@+id/detailCover"
+        android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+        android:textAlignment="gravity"
+        android:textColor="@color/colorPrimary"
+        android:textSize="10dp"
+        android:textStyle="italic"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"/>
 
     <Button
         android:id="@+id/detailBttDownload"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@id/detailAbstract"
+        android:layout_width="95dp"
+        android:layout_height="20dp"
+        android:textSize="10dp"
+        android:layout_below="@id/detailCover"
+        android:background="@drawable/bg_circle_orange_small"
         android:text="Unduh"
-        android:layout_margin="0dp">
+        android:textColor="@color/white"
+        android:layout_margin="5dp">
 
     </Button>
 

@@ -116,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 Toast.makeText(MainActivity.this, pesan, Toast.LENGTH_SHORT).show();
             }
-
         });
 
         //navigationView.setCentreButtonSelected();

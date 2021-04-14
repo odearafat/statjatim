@@ -74,6 +74,7 @@ public class HomeFragment extends Fragment {
     String getResult="Null";
     ImageButton imgBttDavita;
     ImageButton imgBttChatUs;
+    ImageButton imgBttDataCorner;
 
     @Nullable
     @Override
@@ -91,6 +92,7 @@ public class HomeFragment extends Fragment {
         //Button untuk AppBPS
         imgBttDavita=(ImageButton) v.findViewById(R.id.bttDavita);
         imgBttChatUs=(ImageButton) v.findViewById(R.id.bttChatUs);
+        imgBttDataCorner=(ImageButton) v.findViewById(R.id.bttDataCorner);
 
         // LinearLayoutManager is used here, this will layout the elements in a similar fashion
         // to the way ListView would layout elements. The RecyclerView.LayoutManager defines how
@@ -205,6 +207,17 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        imgBttDataCorner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppCompatActivity activity=(AppCompatActivity) v.getContext();
+                activity.getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragmen_container,
+                                new DataCornerFragment()).commit();
+
+            }
+        });
 
         return v;
     }
