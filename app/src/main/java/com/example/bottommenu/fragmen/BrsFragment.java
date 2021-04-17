@@ -1,6 +1,8 @@
 package com.example.bottommenu.fragmen;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,6 +52,8 @@ public class BrsFragment extends Fragment {
     BrsAdapter brsAdapter;
     ProgressBar progressBar;
     List<BrsItem> BrsItems;
+    Dialog dialogDetailBrs;
+
 
     Button cariButton;
     EditText cariEditText;
@@ -84,6 +88,10 @@ public class BrsFragment extends Fragment {
         progressBar=(ProgressBar)v.findViewById(R.id.progressBarBrs);
         cariButton=(Button) v.findViewById(R.id.bttFindBrs);
         cariEditText=(EditText) v.findViewById(R.id.editTextFindBrs);
+
+
+        dialogDetailBrs=new Dialog(this.getContext());
+        dialogDetailBrs.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
         // LinearLayoutManager is used here, this will layout the elements in a similar fashion
@@ -145,7 +153,7 @@ public class BrsFragment extends Fragment {
                 BrsItems = stringToArray(new Gson().toJson(brs.getData().get(1)), BrsItem[].class);
 
 
-                brsAdapter=new BrsAdapter(getContext(),BrsItems);
+                brsAdapter=new BrsAdapter(getContext(),BrsItems, brsHolderApi, dialogDetailBrs);
                 recyclerView.setAdapter(brsAdapter);
 
                 progressBar.setVisibility(View.GONE);

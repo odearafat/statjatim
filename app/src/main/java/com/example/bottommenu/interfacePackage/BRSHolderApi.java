@@ -2,6 +2,7 @@ package com.example.bottommenu.interfacePackage;
 
 import com.example.bottommenu.model.Berita;
 import com.example.bottommenu.model.Brs;
+import com.example.bottommenu.model.BrsDetail;
 import com.example.bottommenu.model.Publikasi;
 
 import retrofit2.Call;
@@ -20,4 +21,13 @@ public interface BRSHolderApi {
             @Query("lang") String lang,
             @Query("keyword") String keyword
     ) ;
+
+    @GET("view")
+    Call<BrsDetail> getView(
+            @Query("model") String model,
+            @Query("domain") String domain,
+            @Query("key") String key,
+            @Query("id") Integer page,
+            @Query("lang") String lang
+    );
 }

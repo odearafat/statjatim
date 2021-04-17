@@ -35,7 +35,7 @@
                 android:textStyle="bold"
                 android:layout_toRightOf="@id/containerDownload"
                 android:layout_marginLeft="5dp"
-                android:layout_marginRight="35dp"
+                android:layout_marginRight="5dp"
                 android:textColor="@color/colorPrimaryDark"
                 />
 
@@ -53,8 +53,7 @@
                 android:layout_marginTop="3dp"
                 android:layout_below="@id/judulBrs"
                 android:layout_toRightOf="@id/containerDownload"
-                android:textColor="@color/white"
-                android:background="@drawable/bg_circle_blue_big"
+                android:textColor="@color/orange"
                 />
 
             <RelativeLayout
@@ -122,12 +121,14 @@
                 android:layout_below="@id/tglBrs"
                 android:layout_toRightOf="@id/containerDownload"
                 android:textColor="@color/colorPrimaryDark"
+                android:visibility="gone"
                 />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true">
+                android:layout_alignParentRight="true"
+                android:visibility="gone">
                 <Button
                     android:id="@+id/arrowBrs"
                     android:layout_width="20dp"
@@ -148,6 +149,18 @@
                 android:textSize="10dp"
                 android:layout_margin="5dp"
                 android:layout_toRightOf="@+id/containerDownload"
+                ></Button>
+            <Button
+                android:id="@+id/bttDetailBrs"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_below="@id/ulasanBrs"
+                android:background="@drawable/bg_circle_blue_small"
+                android:text="Detail"
+                android:textColor="@color/white"
+                android:textSize="10dp"
+                android:layout_margin="5dp"
+                android:layout_toRightOf="@+id/bttUnduhBrs"
                 ></Button>
                 <!-- android:layout_toRightOf="@id/containerTglBrs" -->
 

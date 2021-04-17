@@ -49,7 +49,7 @@
             android:layout_height="40dp"
             android:paddingLeft="5dp"
             android:paddingRight="20dp"
-            android:hint="Cari Publikasi.."
+            android:hint="Cari BRS.."
             android:textColorHint="@color/white_with_alpha"
             android:textColor="@color/colorPrimaryDark"
             android:background="@drawable/bg_blue_search_text_field"

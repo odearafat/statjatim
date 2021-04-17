@@ -84,8 +84,8 @@ public class PublikasiFragment extends Fragment {
         progressBar=(ProgressBar) v.findViewById(R.id.progressBarPub);
         cariButton=(Button) v.findViewById(R.id.bttFindPub);
         cariEditText=(EditText) v.findViewById(R.id.editTextFindPub);
-        dialogDetailPublikasi=new Dialog(this.getContext());
 
+        dialogDetailPublikasi=new Dialog(this.getContext());
         dialogDetailPublikasi.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 

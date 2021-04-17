@@ -1,12 +1,17 @@
 package com.example.bottommenu.fragmen;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -48,6 +53,7 @@ public class BeritaFragment extends Fragment {
     Retrofit retrofit;
     Button cariButton;
     EditText cariEditText;
+    Dialog dialogDetailBerita;
 
     //variable for pagination
     private boolean isLoading=true;
@@ -79,6 +85,9 @@ public class BeritaFragment extends Fragment {
         progressBar=(ProgressBar) v.findViewById(R.id.progressBarBerita);
         cariButton=(Button) v.findViewById(R.id.bttFindBerita);
         cariEditText=(EditText) v.findViewById(R.id.editTextFindBerita);
+
+        dialogDetailBerita=new Dialog(this.getContext());
+        dialogDetailBerita.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
         // LinearLayoutManager is used here, this will layout the elements in a similar fashion
@@ -140,7 +149,7 @@ public class BeritaFragment extends Fragment {
                 //Cast to List of Berita Item
                 beritaItems = stringToArray(new Gson().toJson(berita.getData().get(1)), BeritaItem[].class);
 
-                beritaAdapter=new BeritaAdapter(getContext(),beritaItems, beritaHolderApi);
+                beritaAdapter=new BeritaAdapter(getContext(),beritaItems, beritaHolderApi, dialogDetailBerita);
                 recyclerView.setAdapter(beritaAdapter);
 
                 progressBar.setVisibility(View.GONE);
