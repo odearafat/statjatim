@@ -10,9 +10,16 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,7 +31,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bottommenu.Adapter.BrsAdapter;
 import com.example.bottommenu.Adapter.PublikasiAdapter;
+import com.example.bottommenu.HelperClass.SpinnerList;
 import com.example.bottommenu.R;
+import com.example.bottommenu.activity.MainActivity;
 import com.example.bottommenu.interfacePackage.BRSHolderApi;
 import com.example.bottommenu.interfacePackage.PublikasiHolderApi;
 import com.example.bottommenu.model.Brs;
@@ -52,13 +61,21 @@ public class BrsFragment extends Fragment {
     BrsAdapter brsAdapter;
     ProgressBar progressBar;
     List<BrsItem> BrsItems;
-    Dialog dialogDetailBrs;
+    Dialog dialogDetailBrs, dialogSettingWilayah;
+    ImageButton buttonBackBrs, bttSetBrs;
+    MainActivity mainActivity;
+    Spinner spinnerWilayah;
+    RadioGroup radioGroupBahasa;
+    TextView txt_wilayah_brs;
+    RelativeLayout containerWilayahBrs;
+    Button bttPilihWilayah;
+    SpinnerList spinner;
+
 
 
     Button cariButton;
     EditText cariEditText;
     Retrofit retrofit;
-    Dialog dialogDetailPublikasi;
 
     //variable for pagination
     private boolean isLoading=true;
@@ -69,6 +86,10 @@ public class BrsFragment extends Fragment {
     enum LayoutManagerType {
         GRID_LAYOUT_MANAGER,
         LINEAR_LAYOUT_MANAGER
+    }
+
+    public BrsFragment(MainActivity mainActivity){
+        this.mainActivity=mainActivity;
     }
 
     protected BrsFragment.LayoutManagerType mCurrentLayoutManagerType;
@@ -88,11 +109,18 @@ public class BrsFragment extends Fragment {
         progressBar=(ProgressBar)v.findViewById(R.id.progressBarBrs);
         cariButton=(Button) v.findViewById(R.id.bttFindBrs);
         cariEditText=(EditText) v.findViewById(R.id.editTextFindBrs);
-
+        buttonBackBrs=(ImageButton) v.findViewById(R.id.buttonBackBrs);
+        bttSetBrs=(ImageButton) v.findViewById(R.id.btt_set_brs);
+        containerWilayahBrs=(RelativeLayout) v.findViewById(R.id.container_wilayah_brs);
+        txt_wilayah_brs=(TextView) v.findViewById(R.id.txt_wilayah_brs);
 
         dialogDetailBrs=new Dialog(this.getContext());
         dialogDetailBrs.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+        dialogSettingWilayah=mainActivity.getDialogPilihWilayah();
+
+        //method handler Setting Wilayah
+        setingWilayah();
 
         // LinearLayoutManager is used here, this will layout the elements in a similar fashion
         // to the way ListView would layout elements. The RecyclerView.LayoutManager defines how
@@ -120,6 +148,28 @@ public class BrsFragment extends Fragment {
         //actionListener Search Publication
         cariPublikasi();
 
+        //backButtonHandler
+        buttonBackBrs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
+        //setting Button Publikasi Handler
+        bttSetBrs.setOnClickListener(new  View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                dialogSettingWilayah.show();
+            }
+        });
+        containerWilayahBrs.setOnClickListener(new  View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                dialogSettingWilayah.show();
+            }
+        });
+
         return v;
     }
 
@@ -127,8 +177,8 @@ public class BrsFragment extends Fragment {
         //JsonHolderInterfaceClass
         brsHolderApi=retrofit.create(BRSHolderApi.class);
         Call<Brs> call=brsHolderApi.getList(
-                "pressrelease", "3500", "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
-                "ind", cariEditText.getText().toString()
+                "pressrelease", mainActivity.getIdWilayah(), "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
+                mainActivity.getBahasa(), cariEditText.getText().toString()
         );
 
         //progressbar muncul
@@ -153,7 +203,7 @@ public class BrsFragment extends Fragment {
                 BrsItems = stringToArray(new Gson().toJson(brs.getData().get(1)), BrsItem[].class);
 
 
-                brsAdapter=new BrsAdapter(getContext(),BrsItems, brsHolderApi, dialogDetailBrs);
+                brsAdapter=new BrsAdapter(getContext(),BrsItems, brsHolderApi, dialogDetailBrs, mainActivity);
                 recyclerView.setAdapter(brsAdapter);
 
                 progressBar.setVisibility(View.GONE);
@@ -203,8 +253,8 @@ public class BrsFragment extends Fragment {
     public void performPagination(){
         //Callback
         Call<Brs> call=brsHolderApi.getList(
-                "pressrelease", "3500", "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
-                "ind", cariEditText.getText().toString()
+                "pressrelease", mainActivity.getIdWilayah(), "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
+                mainActivity.getBahasa(), cariEditText.getText().toString()
         );
 
         //Progressbar Visible
@@ -286,6 +336,54 @@ public class BrsFragment extends Fragment {
                     return true;
                 }
                 return false;
+            }
+        });
+    }
+
+    public void setingWilayah(){
+        spinnerWilayah=(Spinner)dialogSettingWilayah.findViewById(R.id.spinner_lokasi);
+        radioGroupBahasa=(RadioGroup)dialogSettingWilayah.findViewById(R.id.radio_gruop_bahasa);
+        bttPilihWilayah=(Button)dialogSettingWilayah.findViewById(R.id.bttPilihWilayah);
+
+        // you need to have a list of data that you want the spinner to display
+        spinner=new SpinnerList();
+        List<String> spinnerArray=spinner.spinnerArray();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, spinnerArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerWilayah.setAdapter(adapter);
+
+        //Set Selection Spinner
+        spinnerWilayah.setSelection(spinner.getIdPosition(mainActivity.getWilayah()));
+        txt_wilayah_brs.setText(mainActivity.getWilayah());
+
+        //Set Selection RadioGroup
+        if(mainActivity.getBahasa().equals("ind")){
+            ((RadioButton) dialogSettingWilayah.findViewById(R.id.indonesia)).setChecked(true);
+        }else{
+            ((RadioButton) dialogSettingWilayah.findViewById(R.id.inggris)).setChecked(true);
+        }
+
+        //Pilih Button Handler
+        bttPilihWilayah.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txt_wilayah_brs.setText(spinnerWilayah.getSelectedItem().toString());
+                dialogSettingWilayah.dismiss();
+
+                //set id wilayah dan Wilayah
+                mainActivity.setWilayah(spinnerWilayah.getSelectedItem().toString());
+                mainActivity.setIdWilayah(spinner.getkdKab(spinnerWilayah.getSelectedItem().toString()));
+
+                if(((RadioButton) dialogSettingWilayah.findViewById(R.id.indonesia)).isChecked()){
+                    mainActivity.setBahasa("ind");
+                }else{
+                    mainActivity.setBahasa("eng");
+                }
+
+                System.out.println("Bahasa :"+mainActivity.getBahasa());
+                //load Data
+                pageNumber=1;
+                getListData();
             }
         });
     }

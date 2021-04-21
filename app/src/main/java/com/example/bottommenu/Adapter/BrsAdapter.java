@@ -18,6 +18,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bottommenu.R;
+import com.example.bottommenu.activity.MainActivity;
 import com.example.bottommenu.interfacePackage.BRSHolderApi;
 import com.example.bottommenu.interfacePackage.BeritaHolderApi;
 import com.example.bottommenu.model.BeritaDetail;
@@ -43,6 +44,7 @@ public class BrsAdapter extends RecyclerView.Adapter<BrsAdapter.BrsViewHolderAda
 
     Dialog dialogDetailBrs;
     BRSHolderApi brsHolderApi;
+    MainActivity mainActivity;
 
     TextView detailJudulBrs, detailBrsDate, detailBrsSize, detailBrsUlasan;
     Button bttDownloadInDialog;
@@ -50,10 +52,11 @@ public class BrsAdapter extends RecyclerView.Adapter<BrsAdapter.BrsViewHolderAda
     public int positionView=0;
 
     public BrsAdapter(Context ct, List<BrsItem> BrsItemLists, BRSHolderApi brsHolderApi,
-                      Dialog dialogDetailBrs) {
+                      Dialog dialogDetailBrs, MainActivity mainActivity) {
         this.BrsItemList=BrsItemLists;
         context=ct;
         downloadFile=new DownloadFile(ct);
+        this.mainActivity=mainActivity;
 
         this.dialogDetailBrs=dialogDetailBrs;
         this.dialogDetailBrs.setContentView(R.layout.detail_brs);
@@ -65,7 +68,6 @@ public class BrsAdapter extends RecyclerView.Adapter<BrsAdapter.BrsViewHolderAda
         this.detailBrsSize=dialogDetailBrs.findViewById(R.id.detailBrsSize);
         this.detailBrsUlasan=dialogDetailBrs.findViewById(R.id.detailBrsUlasan);
         this.bttDownloadInDialog=dialogDetailBrs.findViewById(R.id.bttDownloadInDialog);
-
     }
 
     @NonNull
@@ -150,8 +152,8 @@ public class BrsAdapter extends RecyclerView.Adapter<BrsAdapter.BrsViewHolderAda
         positionView=position;
 
         Call<BrsDetail> call=jsonPlaceHolderApi.getView(
-                "pressrelease", "3500", "2ad01e6a21b015ea1ff8805ced02600c"
-                ,idBrs, "ind"
+                "pressrelease", mainActivity.getIdWilayah(), "2ad01e6a21b015ea1ff8805ced02600c"
+                ,idBrs, mainActivity.getBahasa()
         );
 
         //Callback

@@ -1,6 +1,9 @@
 package com.example.bottommenu.fragmen;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -18,12 +21,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
 import com.example.bottommenu.Adapter.DataStaticAdapter;
 import com.example.bottommenu.R;
+import com.example.bottommenu.activity.MainActivity;
 import com.example.bottommenu.interfacePackage.DataStaticHolderApi;
 import com.example.bottommenu.model.DataStatic;
 import com.example.bottommenu.model.DataStaticItem;
@@ -48,8 +53,10 @@ public class DataListFragment extends Fragment {
     RecyclerView recyclerView;
     DataStaticAdapter dataStaticAdapter;
     ProgressBar progressBar;
-   List<DataStaticItem> DataStaticItems;
+    List<DataStaticItem> DataStaticItems;
     private List<DataStaticItem> DataStaticItemList;
+    ImageButton buttonBackListData;
+    TextView txtDataList;
 
     String getResult="Nullllllllllllll";
 
@@ -58,6 +65,8 @@ public class DataListFragment extends Fragment {
     private int pastVisibleItems, visibleItemCount, totalItemCount, previousTotal=0;
     private int view_threshold=10;
     private int pageNumber=1;
+
+    Dialog dialogDetailDataStatic;
 
 
     Button cariButton;
@@ -71,11 +80,13 @@ public class DataListFragment extends Fragment {
     protected DataListFragment.LayoutManagerType mCurrentLayoutManagerType;
 
     DataStaticHolderApi dataStaticHolderApi;
+    MainActivity mainActivity;
 
 
-    public DataListFragment(Integer idSubject, String namaSubjct) {
+    public DataListFragment(Integer idSubject, String namaSubjct, MainActivity mainActivity) {
         this.idSubject=idSubject;
         this.nmSubject=namaSubjct;
+        this.mainActivity=mainActivity;
         // Required empty public constructor
     }
 
@@ -100,7 +111,13 @@ public class DataListFragment extends Fragment {
         progressBar=(ProgressBar)view.findViewById(R.id.progressBarListData);
         cariButton=(Button) view.findViewById(R.id.bttFindDataStatic);
         cariEditText=(EditText) view.findViewById(R.id.editTextFindDataStatic);
+        buttonBackListData=(ImageButton) view.findViewById(R.id.buttonBackListData);
 
+        txtDataList=(TextView)view.findViewById(R.id.txt_wilayah_data_list);
+        txtDataList.setText(mainActivity.getWilayah());
+
+        dialogDetailDataStatic=new Dialog(this.getContext());
+        dialogDetailDataStatic.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         mLayoutManager = new LinearLayoutManager(this.getContext());
         mCurrentLayoutManagerType = DataListFragment.LayoutManagerType.LINEAR_LAYOUT_MANAGER;
@@ -125,6 +142,13 @@ public class DataListFragment extends Fragment {
         //actionListener Search Publication
         cariPublikasi();
 
+        //backButtonHandler
+        buttonBackListData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
 
         return view;
     }
@@ -133,8 +157,8 @@ public class DataListFragment extends Fragment {
         //JsonHolderInterfaceClass
         dataStaticHolderApi=retrofit.create(DataStaticHolderApi.class);
         Call<DataStatic> call=dataStaticHolderApi.getList(
-                "statictable", "3500", "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
-                "ind", cariEditText.getText().toString(), idSubject
+                "statictable", mainActivity.getIdWilayah(), "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
+                mainActivity.getBahasa(), cariEditText.getText().toString(), idSubject
         );
 
         //progressbar muncul
@@ -159,7 +183,7 @@ public class DataListFragment extends Fragment {
                 DataStaticItems = stringToArray(new Gson().toJson(dataStatic.getData().get(1)), DataStaticItem[].class);
 
 
-                dataStaticAdapter=new DataStaticAdapter(getContext(),DataStaticItems);
+                dataStaticAdapter=new DataStaticAdapter(getContext(),DataStaticItems, dataStaticHolderApi, dialogDetailDataStatic, mainActivity);
                 recyclerView.setAdapter(dataStaticAdapter);
 
                 progressBar.setVisibility(View.GONE);

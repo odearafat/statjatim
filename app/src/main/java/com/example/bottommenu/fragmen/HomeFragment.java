@@ -1,11 +1,14 @@
 package com.example.bottommenu.fragmen;
 
+import android.app.Dialog;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,35 +16,33 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.bottommenu.Adapter.HomeAdapter;
-import com.example.bottommenu.Adapter.PublikasiAdapter;
+import com.example.bottommenu.HelperClass.HelpSliderAdapter;
 import com.example.bottommenu.R;
 import com.example.bottommenu.activity.MainActivity;
 import com.example.bottommenu.interfacePackage.IndikatorStrategisHolderApi;
-import com.example.bottommenu.interfacePackage.PublikasiHolderApi;
 import com.example.bottommenu.model.IndikatorStrategis;
 import com.example.bottommenu.model.IndikatorStrategisItem;
 import com.example.bottommenu.model.Page;
-import com.example.bottommenu.model.Publikasi;
-import com.example.bottommenu.model.PublikasiItem;
 import com.google.gson.Gson;
 
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -58,6 +59,13 @@ public class HomeFragment extends Fragment {
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     protected RecyclerView.LayoutManager mLayoutManager;
     HomeAdapter homeAdapter;
+    FragmentManager fm;
+    MainActivity mainActivity;
+
+    public HomeFragment( MainActivity mainActivity) {
+        this.mainActivity=mainActivity;
+        this.fm=mainActivity.getFm();
+    }
 
     enum LayoutManagerType {
         GRID_LAYOUT_MANAGER,
@@ -72,9 +80,16 @@ public class HomeFragment extends Fragment {
     List<IndikatorStrategisItem>indikatorStrategisItems;
     IndikatorStrategisHolderApi indikatorStrategisHolderApi;
     String getResult="Null";
+    ImageButton settingButton, helpButton;
     ImageButton imgBttDavita;
     ImageButton imgBttChatUs;
     ImageButton imgBttDataCorner;
+
+    //help Asstes
+    Dialog dialogHelpSlider;
+    ViewPager viewPager;
+    LinearLayout dotsLayout;
+    TextView [] dots;
 
     @Nullable
     @Override
@@ -87,12 +102,37 @@ public class HomeFragment extends Fragment {
         //RecycleView List of Data
         recyclerView=(RecyclerView) v.findViewById(R.id.RecycleViewListDataHome);
         progressBar=(ProgressBar) v.findViewById(R.id.progressBarHome);
+        helpButton=(ImageButton) v.findViewById(R.id.helpButton);
+        settingButton=(ImageButton) v.findViewById(R.id.settingButton);
 
 
         //Button untuk AppBPS
         imgBttDavita=(ImageButton) v.findViewById(R.id.bttDavita);
         imgBttChatUs=(ImageButton) v.findViewById(R.id.bttChatUs);
         imgBttDataCorner=(ImageButton) v.findViewById(R.id.bttDataCorner);
+
+        //Dialog pilih Wilayah handler
+        dialogHelpSlider=new Dialog(mainActivity.getWindow().getContext());
+        dialogHelpSlider.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogHelpSlider.setContentView(R.layout.activity_help_onboarding);
+
+        viewPager=dialogHelpSlider.findViewById(R.id.view_pager_help);
+        dotsLayout=dialogHelpSlider.findViewById(R.id.dots_layout);
+        addDots(0);
+        viewPager.addOnPageChangeListener(changeListener);
+
+
+        helpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HelpSliderAdapter helpSliderAdapter=new HelpSliderAdapter(dialogHelpSlider.getContext());
+                System.out.println("Count : "+helpSliderAdapter.getCount());
+                viewPager.setAdapter(helpSliderAdapter);
+                dialogHelpSlider.show();
+            }
+        });
+
+
 
         // LinearLayoutManager is used here, this will layout the elements in a similar fashion
         // to the way ListView would layout elements. The RecyclerView.LayoutManager defines how
@@ -198,9 +238,10 @@ public class HomeFragment extends Fragment {
         imgBttChatUs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppCompatActivity activity=(AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager()
-                        .beginTransaction()
+                //AppCompatActivity activity=(AppCompatActivity) v.getContext();
+                //activity.getSupportFragmentManager()
+                //fm.getSupportFragmentManager()
+                fm.beginTransaction().addToBackStack(null)
                         .replace(R.id.fragmen_container,
                                 new ChatUsFragment()).commit();
 
@@ -210,9 +251,10 @@ public class HomeFragment extends Fragment {
         imgBttDataCorner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppCompatActivity activity=(AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager()
-                        .beginTransaction()
+                //AppCompatActivity activity=(AppCompatActivity) v.getContext();
+                //activity.getSupportFragmentManager()
+                //        .beginTransaction()
+                fm.beginTransaction().addToBackStack(null)
                         .replace(R.id.fragmen_container,
                                 new DataCornerFragment()).commit();
 
@@ -267,5 +309,38 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
        // recyclerView.scrollToPosition(scrollPosition);
     }
+
+    public void addDots(int position){
+        dots=new TextView[4];
+        dotsLayout.removeAllViews();
+        for(int i=0; i<dots.length; i++){
+            dots[i]=new TextView(mainActivity.getWindow().getContext());
+            dots[i].setText(Html.fromHtml("&#8226"));
+            dots[i].setTextSize(35);
+            dots[i].setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+
+            dotsLayout.addView(dots[i]);
+
+        }
+        if(dots.length>0){
+            dots[position].setTextColor(getResources().getColor(R.color.orange));
+        }
+    }
+    ViewPager.OnPageChangeListener changeListener=new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            addDots(position);
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    };
 
 }

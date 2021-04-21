@@ -12,9 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,7 +32,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bottommenu.Adapter.BeritaAdapter;
+import com.example.bottommenu.HelperClass.SpinnerList;
 import com.example.bottommenu.R;
+import com.example.bottommenu.activity.MainActivity;
 import com.example.bottommenu.interfacePackage.BeritaHolderApi;
 import com.example.bottommenu.model.Berita;
 import com.example.bottommenu.model.BeritaItem;
@@ -51,9 +60,17 @@ public class BeritaFragment extends Fragment {
     ProgressBar progressBar;
     List<BeritaItem> beritaItems;
     Retrofit retrofit;
-    Button cariButton;
+    Button cariButton, bttPilihWilayah;
+    ImageButton buttonBackBerita, bttSetBerita;
     EditText cariEditText;
-    Dialog dialogDetailBerita;
+    Dialog dialogDetailBerita, dialogSettingWilayah;
+    ImageButton buttonBackPublikasi;
+    MainActivity mainActivity;
+    RelativeLayout containerWilayahBerita;
+    Spinner spinnerWilayah;
+    RadioGroup radioGroupBahasa;
+    TextView txt_wilayah_berita;
+    SpinnerList spinner;
 
     //variable for pagination
     private boolean isLoading=true;
@@ -66,6 +83,11 @@ public class BeritaFragment extends Fragment {
         LINEAR_LAYOUT_MANAGER
     }
 
+
+
+    public BeritaFragment(MainActivity mainActivity){
+        this.mainActivity=mainActivity;
+    }
     protected BeritaFragment.LayoutManagerType mCurrentLayoutManagerType;
 
     //RecycleView List of Data
@@ -80,15 +102,28 @@ public class BeritaFragment extends Fragment {
         View v=inflater.inflate(R.layout.fragment_berita,container,false);
         v.setTag("RecyclerViewFragment");
 
-
+        //Declare Asset
         recyclerView=(RecyclerView) v.findViewById(R.id.RecycleViewListDataBerita);
         progressBar=(ProgressBar) v.findViewById(R.id.progressBarBerita);
         cariButton=(Button) v.findViewById(R.id.bttFindBerita);
         cariEditText=(EditText) v.findViewById(R.id.editTextFindBerita);
+        buttonBackBerita=(ImageButton) v.findViewById(R.id.buttonBackBerita);
+        containerWilayahBerita=(RelativeLayout) v.findViewById(R.id.containerWilayahBerita);
+        bttSetBerita=(ImageButton) v.findViewById(R.id.btt_set_berita);
+        txt_wilayah_berita=(TextView)v.findViewById(R.id.txt_wilayah_berita);
 
+        //Declare Dialog Open Berita
         dialogDetailBerita=new Dialog(this.getContext());
         dialogDetailBerita.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+        //Declare ImageButton Back Publikasi
+        buttonBackPublikasi=(ImageButton) v.findViewById(R.id.buttonBackPublikasi);
+
+        //declareDialogSettingWilayah
+        dialogSettingWilayah=mainActivity.getDialogPilihWilayah();
+
+        //method handler Setting Wilayah
+        setingWilayah();
 
         // LinearLayoutManager is used here, this will layout the elements in a similar fashion
         // to the way ListView would layout elements. The RecyclerView.LayoutManager defines how
@@ -116,6 +151,28 @@ public class BeritaFragment extends Fragment {
         //actionListener Search Berita
         cariBerita();
 
+        //backButtonHandler
+        buttonBackBerita.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
+        //setting Button Publikasi Handler
+        bttSetBerita.setOnClickListener(new  View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                dialogSettingWilayah.show();
+            }
+        });
+        containerWilayahBerita.setOnClickListener(new  View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                dialogSettingWilayah.show();
+            }
+        });
+
         return v;
     }
 
@@ -123,8 +180,8 @@ public class BeritaFragment extends Fragment {
         //JsonHolderInterfaceClass
         beritaHolderApi=retrofit.create(BeritaHolderApi.class);
         Call<Berita> call=beritaHolderApi.getList(
-                "news", "3500", "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
-                "ind",cariEditText.getText().toString()
+                "news", mainActivity.getIdWilayah(), "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
+                mainActivity.getBahasa(),cariEditText.getText().toString()
         );
 
         //progressbar muncul
@@ -149,7 +206,7 @@ public class BeritaFragment extends Fragment {
                 //Cast to List of Berita Item
                 beritaItems = stringToArray(new Gson().toJson(berita.getData().get(1)), BeritaItem[].class);
 
-                beritaAdapter=new BeritaAdapter(getContext(),beritaItems, beritaHolderApi, dialogDetailBerita);
+                beritaAdapter=new BeritaAdapter(getContext(),beritaItems, beritaHolderApi, dialogDetailBerita, mainActivity);
                 recyclerView.setAdapter(beritaAdapter);
 
                 progressBar.setVisibility(View.GONE);
@@ -200,8 +257,8 @@ public class BeritaFragment extends Fragment {
     public void performPagination(){
         //Callback
         Call<Berita> call=beritaHolderApi.getList(
-                "news", "3500", "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
-                "ind", cariEditText.getText().toString()
+                "news", mainActivity.getIdWilayah(), "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
+                mainActivity.getBahasa(), cariEditText.getText().toString()
         );
 
         //Progressbar Visible
@@ -282,6 +339,54 @@ public class BeritaFragment extends Fragment {
                     return true;
                 }
                 return false;
+            }
+        });
+    }
+
+    public void setingWilayah(){
+        spinnerWilayah=(Spinner)dialogSettingWilayah.findViewById(R.id.spinner_lokasi);
+        radioGroupBahasa=(RadioGroup)dialogSettingWilayah.findViewById(R.id.radio_gruop_bahasa);
+        bttPilihWilayah=(Button)dialogSettingWilayah.findViewById(R.id.bttPilihWilayah);
+
+        // you need to have a list of data that you want the spinner to display
+        spinner=new SpinnerList();
+        List<String> spinnerArray=spinner.spinnerArray();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, spinnerArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerWilayah.setAdapter(adapter);
+
+        //Set Selection Spinner
+        spinnerWilayah.setSelection(spinner.getIdPosition(mainActivity.getWilayah()));
+        txt_wilayah_berita.setText(mainActivity.getWilayah());
+
+        //Set Selection RadioGroup
+        if(mainActivity.getBahasa().equals("ind")){
+            ((RadioButton) dialogSettingWilayah.findViewById(R.id.indonesia)).setChecked(true);
+        }else{
+            ((RadioButton) dialogSettingWilayah.findViewById(R.id.inggris)).setChecked(true);
+        }
+
+        //Pilih Button Handler
+        bttPilihWilayah.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txt_wilayah_berita.setText(spinnerWilayah.getSelectedItem().toString());
+
+                //set id wilayah dan Wilayah
+                mainActivity.setWilayah(spinnerWilayah.getSelectedItem().toString());
+                mainActivity.setIdWilayah(spinner.getkdKab(spinnerWilayah.getSelectedItem().toString()));
+
+                if(((RadioButton) dialogSettingWilayah.findViewById(R.id.indonesia)).isChecked()){
+                    mainActivity.setBahasa("ind");
+                }else{
+                    mainActivity.setBahasa("eng");
+                }
+
+                dialogSettingWilayah.dismiss();
+
+                //load Data
+                pageNumber=1;
+                getListData();
             }
         });
     }

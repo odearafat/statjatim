@@ -11,9 +11,16 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,7 +31,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bottommenu.Adapter.PublikasiAdapter;
+import com.example.bottommenu.HelperClass.SpinnerList;
 import com.example.bottommenu.R;
+import com.example.bottommenu.activity.MainActivity;
 import com.example.bottommenu.interfacePackage.PublikasiHolderApi;
 import com.example.bottommenu.model.Page;
 import com.example.bottommenu.model.Publikasi;
@@ -32,6 +41,7 @@ import com.example.bottommenu.model.PublikasiItem;
 import com.google.gson.Gson;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,17 +59,29 @@ public class PublikasiFragment extends Fragment {
     RecyclerView recyclerView;
     ProgressBar progressBar;
     List<PublikasiItem> publikasiItems;
-    Button cariButton;
+    Button cariButton, bttPilihWilayah;
     EditText cariEditText;
     Retrofit retrofit;
-    Dialog dialogDetailPublikasi;
+    Dialog dialogDetailPublikasi, dialogSettingWilayah;
+    ImageButton buttonBackPublikasi, bttSetPublikasi;
+    RelativeLayout containerWilayahPublikasi;
+    Spinner spinnerWilayah;
+    RadioGroup radioGroupBahasa;
+    TextView txt_wilayah_publikasi;
+    SpinnerList spinner;
+
 
     //variable for pagination
     private boolean isLoading=true;
     private int pastVisibleItems, visibleItemCount, totalItemCount, previousTotal=0;
     private int view_threshold=10;
     private int pageNumber=1;
+    MainActivity mainActivity;
 
+
+    public PublikasiFragment(MainActivity mainActivity){
+        this.mainActivity=mainActivity;
+    }
 
     private enum LayoutManagerType {
         GRID_LAYOUT_MANAGER,
@@ -84,10 +106,18 @@ public class PublikasiFragment extends Fragment {
         progressBar=(ProgressBar) v.findViewById(R.id.progressBarPub);
         cariButton=(Button) v.findViewById(R.id.bttFindPub);
         cariEditText=(EditText) v.findViewById(R.id.editTextFindPub);
+        buttonBackPublikasi= (ImageButton) v.findViewById(R.id.buttonBackPublikasi);
+        containerWilayahPublikasi=(RelativeLayout) v.findViewById(R.id.containerWilayahPublikasi);
+        bttSetPublikasi=(ImageButton) v.findViewById(R.id.btt_set_publikasi);
+        txt_wilayah_publikasi=(TextView)v.findViewById(R.id.txt_wilayah_publikasi);
 
         dialogDetailPublikasi=new Dialog(this.getContext());
         dialogDetailPublikasi.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+        dialogSettingWilayah=mainActivity.getDialogPilihWilayah();
+
+        //method handler Setting Wilayah
+        setingWilayah();
 
         // LinearLayoutManager is used here, this will layout the elements in a similar fashion
         // to the way ListView would layout elements. The RecyclerView.LayoutManager defines how
@@ -112,6 +142,30 @@ public class PublikasiFragment extends Fragment {
         //actionListener Search Publication
         cariPublikasi();
 
+        //backButtonHandler
+        buttonBackPublikasi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
+        //setting Button Publikasi Handler
+        bttSetPublikasi.setOnClickListener(new  View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                dialogSettingWilayah.show();
+            }
+        });
+        containerWilayahPublikasi.setOnClickListener(new  View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                dialogSettingWilayah.show();
+            }
+        });
+
+
+
         return v;
     }
 
@@ -119,8 +173,8 @@ public class PublikasiFragment extends Fragment {
         //JsonHolderInterfaceClass
         jsonPlaceHolderApi=retrofit.create(PublikasiHolderApi.class);
         Call<Publikasi> call=jsonPlaceHolderApi.getList(
-                "publication", "3500", "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
-                "ind",cariEditText.getText().toString()
+                "publication", mainActivity.getIdWilayah(), "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
+                mainActivity.getBahasa(),cariEditText.getText().toString()
         );
 
         //progressbar muncul
@@ -145,7 +199,7 @@ public class PublikasiFragment extends Fragment {
                 //Cast to List of Publikasi Item
                 publikasiItems = stringToArray(new Gson().toJson(publikasi.getData().get(1)), PublikasiItem[].class);
 
-                publikasiAdapter=new PublikasiAdapter(getContext(),publikasiItems, dialogDetailPublikasi);
+                publikasiAdapter=new PublikasiAdapter(getContext(),publikasiItems, dialogDetailPublikasi, mainActivity);
                 recyclerView.setAdapter(publikasiAdapter);
 
                 progressBar.setVisibility(View.GONE);
@@ -196,8 +250,8 @@ public class PublikasiFragment extends Fragment {
     public void performPagination(){
         //Callback
         Call<Publikasi> call=jsonPlaceHolderApi.getList(
-                "publication", "3500", "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
-                "ind",cariEditText.getText().toString()
+                "publication", mainActivity.getIdWilayah(), "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
+                mainActivity.getBahasa(),cariEditText.getText().toString()
         );
 
         //Progressbar Visible
@@ -278,6 +332,55 @@ public class PublikasiFragment extends Fragment {
                     return true;
                 }
                 return false;
+            }
+        });
+    }
+
+    public void setingWilayah(){
+        spinnerWilayah=(Spinner)dialogSettingWilayah.findViewById(R.id.spinner_lokasi);
+        radioGroupBahasa=(RadioGroup)dialogSettingWilayah.findViewById(R.id.radio_gruop_bahasa);
+        bttPilihWilayah=(Button)dialogSettingWilayah.findViewById(R.id.bttPilihWilayah);
+
+        // you need to have a list of data that you want the spinner to display
+        spinner=new SpinnerList();
+        List<String> spinnerArray=spinner.spinnerArray();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, spinnerArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerWilayah.setAdapter(adapter);
+
+        //Set Selection Spinner
+        spinnerWilayah.setSelection(spinner.getIdPosition(mainActivity.getWilayah()));
+        txt_wilayah_publikasi.setText(mainActivity.getWilayah());
+
+        //Set Selection RadioGroup
+        if(mainActivity.getBahasa().equals("ind")){
+            ((RadioButton) dialogSettingWilayah.findViewById(R.id.indonesia)).setChecked(true);
+        }else{
+            ((RadioButton) dialogSettingWilayah.findViewById(R.id.inggris)).setChecked(true);
+        }
+
+        //Pilih Button Handler
+        bttPilihWilayah.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            txt_wilayah_publikasi.setText(spinnerWilayah.getSelectedItem().toString());
+            dialogSettingWilayah.dismiss();
+
+            //set id wilayah dan Wilayah
+            mainActivity.setWilayah(spinnerWilayah.getSelectedItem().toString());
+            mainActivity.setIdWilayah(spinner.getkdKab(spinnerWilayah.getSelectedItem().toString()));
+
+            if(((RadioButton) dialogSettingWilayah.findViewById(R.id.indonesia)).isChecked()){
+                System.out.println("masukk ");
+                mainActivity.setBahasa("ind");
+            }else{
+                mainActivity.setBahasa("eng");
+            }
+
+                System.out.println("Bahasa :"+mainActivity.getBahasa());
+            //load Data
+            pageNumber=1;
+            getListData();
             }
         });
     }

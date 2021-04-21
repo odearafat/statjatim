@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageButton;
 
 import androidx.fragment.app.Fragment;
 
@@ -26,6 +27,7 @@ public class DataCornerFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    ImageButton buttonBackDataCorner;
 
     public DataCornerFragment() {
         // Required empty public constructor
@@ -64,6 +66,16 @@ public class DataCornerFragment extends Fragment {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_data_corner,container,false);
         WebView wv_data_corner=view.findViewById(R.id.dataCorner);
+        buttonBackDataCorner=(ImageButton) view.findViewById(R.id.buttonBackDataCorner);
+
+        //backButtonHandler
+        buttonBackDataCorner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
 
         //Enable Javasript Webview
         wv_data_corner.getSettings().setJavaScriptEnabled(true);

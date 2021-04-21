@@ -35,24 +35,11 @@
                 android:textStyle="bold"
                 android:layout_toRightOf="@id/containerDownload"
                 android:layout_marginLeft="5dp"
-                android:layout_marginRight="35dp"
+                android:layout_marginRight="5dp"
                 android:textColor="@color/colorPrimaryDark"
                 />
 
 
-
-            <RelativeLayout
-                android:id="@+id/titik2"
-                android:layout_width="5dp"
-                android:layout_height="5dp"
-                android:background="@drawable/bg_circle_blue_small"
-                android:layout_toRightOf="@id/bttUnduhDataStatic"
-                android:layout_below="@id/judulDataStatic"
-                android:layout_marginTop="12dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-
-                ></RelativeLayout>
                 <TextView
                     android:id="@+id/tglDataStatic"
                     android:layout_centerInParent="true"
@@ -64,7 +51,7 @@
                     android:textStyle="italic"
                     android:padding="3dp"
                     android:layout_below="@id/judulDataStatic"
-                    android:layout_toRightOf="@id/titik2"
+                    android:layout_toRightOf="@id/containerDownload"
                     android:textColor="@color/orange"
                     />
             <RelativeLayout
@@ -98,13 +85,25 @@
                 android:id="@+id/bttUnduhDataStatic"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:layout_below="@id/judulDataStatic"
+                android:layout_below="@id/tglDataStatic"
                 android:background="@drawable/bg_circle_orange_small"
                 android:text="Unduh"
                 android:textColor="@color/white"
                 android:textSize="10dp"
                 android:layout_margin="5dp"
                 android:layout_toRightOf="@+id/containerDownload"
+                ></Button>
+            <Button
+                android:id="@+id/bttViewDataStatic"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_below="@id/tglDataStatic"
+                android:background="@drawable/bg_circle_blue_small"
+                android:text="Detail"
+                android:textColor="@color/white"
+                android:textSize="10dp"
+                android:layout_margin="5dp"
+                android:layout_toRightOf="@+id/bttUnduhDataStatic"
                 ></Button>
                 <!-- android:layout_toRightOf="@id/containerTglBrs" -->
 

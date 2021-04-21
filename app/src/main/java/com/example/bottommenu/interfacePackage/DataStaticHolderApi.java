@@ -1,7 +1,9 @@
 package com.example.bottommenu.interfacePackage;
 
+import com.example.bottommenu.model.BeritaDetail;
 import com.example.bottommenu.model.Brs;
 import com.example.bottommenu.model.DataStatic;
+import com.example.bottommenu.model.DataStaticDetail;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -19,5 +21,14 @@ public interface DataStaticHolderApi {
             @Query("lang") String lang,
             @Query("keyword") String keyword,
             @Query("subject") Integer idsubject
+    ) ;
+
+    @GET("view")
+    Call<DataStaticDetail> getView(
+            @Query("model") String model,
+            @Query("domain") String domain,
+            @Query("key") String key,
+            @Query("id") Integer page,
+            @Query("lang") String lang
     ) ;
 }

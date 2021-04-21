@@ -26,6 +26,7 @@ import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bottommenu.R;
+import com.example.bottommenu.activity.MainActivity;
 import com.example.bottommenu.interfacePackage.BeritaHolderApi;
 import com.example.bottommenu.interfacePackage.PublikasiHolderApi;
 import com.example.bottommenu.model.Berita;
@@ -55,14 +56,15 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.BeritaView
     Dialog dialogDetailBerita;
     TextView detailJudulBerita, detailBeritaDate, detailBeritaKatKegiatan, detailBeritaUlasan;
     ImageView fotoKegiatan;
-
+    MainActivity mainActivity;
 
 
     public BeritaAdapter(Context ct, List<BeritaItem> beritaItem, BeritaHolderApi beritaHolderApis,
-                         Dialog dialogDetailBerita ){
+                         Dialog dialogDetailBerita, MainActivity mainActivity){
         this.beritaItems=beritaItem;
         context=ct;
         this.beritaHolderApi=beritaHolderApis;
+        this.mainActivity=mainActivity;
 
         this.dialogDetailBerita=dialogDetailBerita;
         this.dialogDetailBerita.setContentView(R.layout.detail_berita);
@@ -124,8 +126,8 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.BeritaView
                     int idPub=beritaItems.get(position).getNews_id();
                     //354475b2d04ee5be705892c01701899d
                     Call<BeritaDetail> call=jsonPlaceHolderApi.getView(
-                            "news", "3500", "2ad01e6a21b015ea1ff8805ced02600c"
-                            ,idPub, "ind"
+                            "news", mainActivity.getIdWilayah(), "2ad01e6a21b015ea1ff8805ced02600c"
+                            ,idPub, mainActivity.getBahasa()
                     );
 
                     //Callback
@@ -186,8 +188,8 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.BeritaView
 
         //JsonHolderInterfaceClass
         Call<BeritaDetail> call=beritaHolderApi.getView(
-                "news", "3500", "2ad01e6a21b015ea1ff8805ced02600c", idBerita,
-                "ind"
+                "news", mainActivity.getIdWilayah(), "2ad01e6a21b015ea1ff8805ced02600c", idBerita,
+                mainActivity.getBahasa()
         );
 
         //progressbar muncul

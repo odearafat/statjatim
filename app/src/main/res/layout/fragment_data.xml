@@ -9,29 +9,78 @@
         android:background="@color/colorPrimary"
         android:id="@+id/dataViewName"
         android:paddingBottom="10dp"
-        android:paddingTop="10dp"
         android:paddingLeft="10dp"
         >
         <ImageView
-            android:id="@+id/buttonBack"
+            android:layout_width="120dp"
+            android:layout_height="54.749dp"
+            android:background="@drawable/ic_daun_bar"
+            android:layout_alignParentRight="true">
+
+        </ImageView>
+        <ImageButton
+            android:id="@+id/buttonBackData"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/ic_baseline_keyboard_arrow_left_24"
             >
-        </ImageView>
+        </ImageButton>
 
         <TextView
+            android:id="@+id/txt_bar_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Data"
-            android:textSize="25dp"
+            android:textSize="20dp"
             android:textStyle="bold"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
+            android:layout_marginTop="10dp"
             android:textColor="@color/white"
-            android:layout_toRightOf="@id/buttonBack"
+            android:layout_toRightOf="@id/buttonBackData"
             />
 
+        <ImageButton
+            android:id="@+id/btt_set_data"
+            android:layout_width="5dp"
+            android:layout_height="19dp"
+            android:background="@drawable/ic_three_circle"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp"
+            android:layout_centerVertical="true"
+            ></ImageButton>
+        <RelativeLayout
+            android:id="@+id/containerWilayahData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_bar_data"
+            android:layout_toRightOf="@+id/buttonBackData"
+            android:background="@drawable/bg_dark_blue_big_circle"
+            >
+            <ImageView
+                android:id="@+id/img_location"
+                android:layout_width="8dp"
+                android:layout_height="11.13dp"
+                android:background="@drawable/ic_location"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_centerVertical="true"
+                ></ImageView>
+            <TextView
+                android:id="@+id/txt_wilayah_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:textSize="9dp"
+                android:text="Provinsi Jawa Timur"
+                android:layout_toRightOf="@id/img_location"
+                android:textColor="@color/white"
+                android:layout_centerVertical="true"
+                ></TextView>
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout

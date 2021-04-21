@@ -14,10 +14,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.fragment.app.Fragment;
 
 import com.example.bottommenu.R;
+import com.example.bottommenu.activity.MainActivity;
 import com.example.bottommenu.fragmen.DataListFragment;
 import com.example.bottommenu.fragmen.HomeFragment;
 import com.example.bottommenu.model.SubjectItem;
@@ -29,10 +31,14 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.BrsViewH
 
     Context context;
     private List<SubjectItem> SubjectItemList;
+    MainActivity mainActivity;
+    FragmentManager fm;
 
-    public SubjectAdapter(Context ct, List<SubjectItem> SubjectItems) {
+    public SubjectAdapter(Context ct, List<SubjectItem> SubjectItems, FragmentManager fm, MainActivity mainActivity) {
         this.SubjectItemList=SubjectItems;
         context=ct;
+        this.fm=fm;
+        this.mainActivity=mainActivity;
     }
 
     @NonNull
@@ -46,11 +52,13 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.BrsViewH
     @Override
     public void onBindViewHolder(@NonNull final BrsViewHolderAdapter holder, final int position) {
         holder.nmSubject.setText(SubjectItemList.get(position).getTitle());
-        if(SubjectItemList.get(position).getSubcat().equals("Ekonomi dan Perdagangan")){
+        if(SubjectItemList.get(position).getSubcat().equals("Ekonomi dan Perdagangan") ||
+                SubjectItemList.get(position).getSubcat().equals("Economic and Trade")  ){
             holder.containerIconSubject.setBackgroundResource(R.drawable.bg_circle_orange_small);
             holder.nmSubject.setTextColor(ContextCompat.getColor(context,
                     R.color.orange));
-        }else if(SubjectItemList.get(position).getSubcat().equals("Pertanian dan Pertambangan")){
+        }else if(SubjectItemList.get(position).getSubcat().equals("Pertanian dan Pertambangan") ||
+                SubjectItemList.get(position).getSubcat().equals("Agriculture and Mining")){
             holder.containerIconSubject.setBackgroundResource(R.drawable.bg_circle_green_small);
             holder.nmSubject.setTextColor(ContextCompat.getColor(context,
                     R.color.green));
@@ -183,18 +191,19 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.BrsViewH
         holder.imageButtonSubject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppCompatActivity activity=(AppCompatActivity) v.getContext();
+                //AppCompatActivity activity=(AppCompatActivity) v.getContext();
 
                 //Intent i= new Intent(v.getContext(),DataListFragment.class);
                 //i.putExtra("idSubject", SubjectItemList.get(position).getSub_id());
 
                 //System.out.println("id="+SubjectItemList.get(position).getSub_id());
 
-                activity.getSupportFragmentManager()
-                        .beginTransaction()
+                //activity.getSupportFragmentManager()
+                //        .beginTransaction()
+                fm.beginTransaction().addToBackStack(null)
                         .replace(R.id.fragmen_container,
                                 new DataListFragment(SubjectItemList.get(position).getSub_id(),
-                                        SubjectItemList.get(position).getTitle())).commit();
+                                        SubjectItemList.get(position).getTitle(), mainActivity)).commit();
                 //activity.startActivity(i);
             }
         });

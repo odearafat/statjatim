@@ -34,12 +34,6 @@ public class BrsItemDetail {
         return pdf;
     }
     public String getSizeBrs() { return size; }
-
-    public String getSubj_id() {
-        return subj_id;
-    }
-
-    public String getSubj() {
-        return subj;
-    }
+    public String getSubj_id() {return subj_id;}
+    public String getSubj() {return subj; }
 }

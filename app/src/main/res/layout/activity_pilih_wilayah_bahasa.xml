@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="20dp"
+    android:background="@drawable/bg_bttn_white">
+
+    <ImageView
+        android:id="@+id/ic_lokasi_bahasa"
+        android:layout_width="154.5dp"
+        android:layout_height="170.76dp"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/ic_lokasi_bahasa"
+        ></ImageView>
+    <TextView
+        android:id="@+id/txtLokasi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pilih Wilayah dan Bahasa"
+        android:textStyle="bold"
+        android:layout_below="@id/ic_lokasi_bahasa"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:textSize="18dp"
+        android:textColor="@color/colorPrimaryDark"
+        ></TextView>
+    <TextView
+        android:id="@+id/txt_lokasi_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtLokasi"
+        android:text="Wilayah "
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="13dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp">
+    </TextView>
+    <TextView
+        android:id="@+id/txt_lokasi_bintang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtLokasi"
+        android:text="*"
+        android:layout_toRightOf="@id/txt_lokasi_point"
+        android:textColor="@color/orange"
+        android:textSize="13dp"
+        android:gravity="top"
+        android:layout_marginTop="27dp"
+        android:layout_marginLeft="5dp">
+    </TextView>
+
+    <Spinner
+        android:id="@+id/spinner_lokasi"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/txt_lokasi_point"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/bg_blue_spinner"
+
+        ></Spinner>
+    <TextView
+        android:id="@+id/txt_bahasa_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner_lokasi"
+        android:text="Bahasa "
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="13dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp">
+    </TextView>
+    <TextView
+        android:id="@+id/txt_bahasa_bintang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner_lokasi"
+        android:text="*"
+        android:layout_toRightOf="@id/txt_bahasa_point"
+        android:textColor="@color/orange"
+        android:textSize="13dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginLeft="5dp"></TextView>
+
+    <RadioGroup
+        android:id="@+id/radio_gruop_bahasa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_bahasa_point"
+        android:layout_marginLeft="30dp"
+        android:orientation="horizontal"
+
+        android:layout_marginRight="30dp">
+
+        <RadioButton
+            android:id="@+id/indonesia"
+            android:layout_marginRight="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/colorPrimaryDark"
+            android:outlineSpotShadowColor="@color/colorPrimaryDark"
+            android:shadowColor="@color/colorPrimaryDark"
+            android:text="Indonesia"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="13dp"
+            />
+
+        <RadioButton
+            android:id="@+id/inggris"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/colorPrimaryDark"
+            android:text="Inggris"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="13dp" />
+    </RadioGroup>
+    <Button
+        android:id="@+id/bttPilihWilayah"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:text="PILIH"
+        android:textColor="@color/white"
+        android:background="@drawable/bg_dark_blue_btt_search"
+        android:layout_below="@+id/radio_gruop_bahasa"
+
+        ></Button>
+
+</RelativeLayout>

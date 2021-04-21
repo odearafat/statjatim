@@ -36,7 +36,8 @@
         app:space_background_color="@color/colorPrimary"
         app:centre_button_icon="@drawable/ic_beranda_white_bottom"
         app:space_item_icon_size="100dp"
-        app:space_item_icon_only_size="100dp">
+        app:space_item_icon_only_size="100dp"
+        app:layout_behavior="com.luseen.spacenavigation.SpaceNavigationViewBehavior">
 
         <!--app:inactive_centre_button_icon_color="#FA2415"-->
     </com.luseen.spacenavigation.SpaceNavigationView>

@@ -8,22 +8,32 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bottommenu.Adapter.BrsAdapter;
 import com.example.bottommenu.Adapter.SubjectAdapter;
+import com.example.bottommenu.HelperClass.SpinnerList;
 import com.example.bottommenu.R;
+import com.example.bottommenu.activity.MainActivity;
 import com.example.bottommenu.interfacePackage.BRSHolderApi;
 import com.example.bottommenu.interfacePackage.SubjectHolderApi;
 import com.example.bottommenu.model.Brs;
@@ -55,8 +65,17 @@ public class DataFragment extends Fragment {
     SubjectAdapter subjectAdapter;
     //ProgressBar progressBar;
     List<SubjectItem> subjectItems;
+    ImageButton buttonBackData, bttSetData;
 
-    Button cariButton;
+    Dialog dialogSettingWilayah;
+    RelativeLayout containerWilayahData;
+    Spinner spinnerWilayah;
+    RadioGroup radioGroupBahasa;
+    TextView txt_wilayah_data;
+    SpinnerList spinner;
+
+
+    Button cariButton, bttPilihWilayah;
     EditText cariEditText;
     Retrofit retrofit;
     Call<Subject> call;
@@ -67,16 +86,24 @@ public class DataFragment extends Fragment {
     private int pastVisibleItems, visibleItemCount, totalItemCount, previousTotal=0;
     private int view_threshold=10;
     private int pageNumber=1;
+    MainActivity mainActivity;
 
     private enum LayoutManagerType {
         GRID_LAYOUT_MANAGER,
         LINEAR_LAYOUT_MANAGER
     }
 
+
     protected DataFragment.LayoutManagerType mCurrentLayoutManagerType;
     SubjectHolderApi subjectHolderApi;
     String getResult="Nullllllllllllll";
     int pages = 1;
+    FragmentManager fm;
+
+    public DataFragment(MainActivity mainActivity){
+        this.mainActivity=mainActivity;
+        this.fm=mainActivity.getFm();
+    }
 
 
     @Nullable
@@ -85,19 +112,26 @@ public class DataFragment extends Fragment {
         //Call FragmentBrs
         View v=inflater.inflate(R.layout.fragment_data,container,false);
         v.setTag("RecyclerViewFragment");
+        pageNumber=1;
 
         //RecycleView List of Data
         recyclerView=(RecyclerView) v.findViewById(R.id.RecycleViewListSosduk);
         //progressBar=(ProgressBar)v.findViewById(R.id.progressBarBrs);
         cariButton=(Button) v.findViewById(R.id.bttFindData);
         cariEditText=(EditText) v.findViewById(R.id.editTextFindData);
+        buttonBackData=(ImageButton) v.findViewById(R.id.buttonBackData);
 
+        containerWilayahData=(RelativeLayout) v.findViewById(R.id.containerWilayahData);
+        bttSetData=(ImageButton) v.findViewById(R.id.btt_set_data);
+        txt_wilayah_data=(TextView)v.findViewById(R.id.txt_wilayah_data);
 
         // LinearLayoutManager is used here, this will layout the elements in a similar fashion
         // to the way ListView would layout elements. The RecyclerView.LayoutManager defines how
         // elements are laid out.
 
 //        mLayoutManager = new GridLayoutManager(this.getContext(),3,GridLayoutManager.HORIZONTAL,true);
+        dialogSettingWilayah=mainActivity.getDialogPilihWilayah();
+        setingWilayah();
 
 //
         mLayoutManager = new LinearLayoutManager(this.getContext());
@@ -122,6 +156,27 @@ public class DataFragment extends Fragment {
         //Landing page Data menu
         getListData();
 
+        //backButtonHandler
+        buttonBackData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
+        bttSetData.setOnClickListener(new  View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                dialogSettingWilayah.show();
+            }
+        });
+        containerWilayahData.setOnClickListener(new  View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                dialogSettingWilayah.show();
+            }
+        });
+
 
         //actionListener Search Publication
         //cariPublikasi();
@@ -133,8 +188,8 @@ public class DataFragment extends Fragment {
         ArrayList<Object> subjectItemsfinal = new ArrayList<>();
         //JsonHolderInterfaceClass
         call=subjectHolderApi.getList(
-                "subject", "3500", "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
-                "ind", cariEditText.getText().toString()
+                "subject", mainActivity.getIdWilayah(), "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
+                mainActivity.getBahasa(), cariEditText.getText().toString()
         );
         call.enqueue(new Callback<Subject>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -153,8 +208,8 @@ public class DataFragment extends Fragment {
                 for (pageNumber=1;pageNumber<=page.getPages(); pageNumber++){
                     if(pageNumber==page.getPages()){
                         call=subjectHolderApi.getList(
-                                "subject", "3500", "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
-                                "ind", cariEditText.getText().toString()
+                                "subject", mainActivity.getIdWilayah(), "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
+                                mainActivity.getBahasa(), cariEditText.getText().toString()
                         );
                         call.enqueue(new Callback<Subject>() {
                             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -170,12 +225,9 @@ public class DataFragment extends Fragment {
                                 //subjectItems = stringToArray(new Gson().toJson(subject.getData().get(1)), SubjectItem[].class);
                                 subjectItems=new ArrayList<>(subjectItems);
                                 subjectItems.addAll(stringToArray(new Gson().toJson(subject.getData().get(1)), SubjectItem[].class));
-
                                 System.out.println("Jumlah :"+subjectItems.size());
 
-
                             }
-
 
                             @Override
                             public void onFailure(Call<Subject> call, Throwable t) {
@@ -186,8 +238,8 @@ public class DataFragment extends Fragment {
                         });
                     }else{
                         call=subjectHolderApi.getList(
-                                "subject", "3500", "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
-                                "ind", cariEditText.getText().toString()
+                                "subject", mainActivity.getIdWilayah(), "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
+                                mainActivity.getBahasa(), cariEditText.getText().toString()
                         );
                         call.enqueue(new Callback<Subject>() {
                             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -214,7 +266,7 @@ public class DataFragment extends Fragment {
                                         //return o1.getTitle().compareTo(o2.getTitle());
                                     }
                                 });
-                                subjectAdapter=new SubjectAdapter(getContext(),subjectItems );
+                                subjectAdapter=new SubjectAdapter(getContext(),subjectItems,fm, mainActivity );
                                 recyclerView.setAdapter(subjectAdapter);
                             }
 
@@ -243,8 +295,8 @@ public class DataFragment extends Fragment {
 
     public void getSubject(){
         call=subjectHolderApi.getList(
-                "subject", "3500", "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
-                "ind", cariEditText.getText().toString()
+                "subject", mainActivity.getIdWilayah(), "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
+                mainActivity.getBahasa(), cariEditText.getText().toString()
         );
         call.enqueue(new Callback<Subject>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -363,6 +415,55 @@ public class DataFragment extends Fragment {
                     return true;
                 }
                 return false;
+            }
+        });
+    }
+
+    public void setingWilayah(){
+        spinnerWilayah=(Spinner)dialogSettingWilayah.findViewById(R.id.spinner_lokasi);
+        radioGroupBahasa=(RadioGroup)dialogSettingWilayah.findViewById(R.id.radio_gruop_bahasa);
+        bttPilihWilayah=(Button)dialogSettingWilayah.findViewById(R.id.bttPilihWilayah);
+
+        // you need to have a list of data that you want the spinner to display
+        spinner=new SpinnerList();
+        List<String> spinnerArray=spinner.spinnerArray();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, spinnerArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerWilayah.setAdapter(adapter);
+
+        //Set Selection Spinner
+        spinnerWilayah.setSelection(spinner.getIdPosition(mainActivity.getWilayah()));
+        txt_wilayah_data.setText(mainActivity.getWilayah());
+
+        //Set Selection RadioGroup
+        if(mainActivity.getBahasa().equals("ind")){
+            ((RadioButton) dialogSettingWilayah.findViewById(R.id.indonesia)).setChecked(true);
+        }else{
+            ((RadioButton) dialogSettingWilayah.findViewById(R.id.inggris)).setChecked(true);
+        }
+
+        //Pilih Button Handler
+        bttPilihWilayah.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txt_wilayah_data.setText(spinnerWilayah.getSelectedItem().toString());
+                dialogSettingWilayah.dismiss();
+
+                //set id wilayah dan Wilayah
+                mainActivity.setWilayah(spinnerWilayah.getSelectedItem().toString());
+                mainActivity.setIdWilayah(spinner.getkdKab(spinnerWilayah.getSelectedItem().toString()));
+
+                if(((RadioButton) dialogSettingWilayah.findViewById(R.id.indonesia)).isChecked()){
+                    System.out.println("masukk ");
+                    mainActivity.setBahasa("ind");
+                }else{
+                    mainActivity.setBahasa("eng");
+                }
+
+                System.out.println("Bahasa :"+mainActivity.getBahasa());
+                //load Data
+                pageNumber=1;
+                getListData();
             }
         });
     }

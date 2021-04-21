@@ -61,15 +61,18 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Publ
     Button detailDownloadbutton;
     ImageView detailCover;
     Integer positionInView;
+    MainActivity mainActivity;
 
 
 
     Context context;
 
-    public PublikasiAdapter(Context ct, List<PublikasiItem> publikasiItems, Dialog dialogDetailPublikasis) {
+    public PublikasiAdapter(Context ct, List<PublikasiItem> publikasiItems, Dialog dialogDetailPublikasis,
+                            MainActivity mainActivity) {
         this.publikasiItemList=publikasiItems;
         context=ct;
         this.dialogDetailPublikasi=dialogDetailPublikasis;
+        this.mainActivity=mainActivity;
 
 
         dialogDetailPublikasi.setContentView(R.layout.detail_publikasi);
@@ -131,8 +134,8 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Publ
 
         //354475b2d04ee5be705892c01701899d
         Call<PublikasiView> call=jsonPlaceHolderApi.getView(
-                "publication", "3500", "2ad01e6a21b015ea1ff8805ced02600c",
-                "ind",idPub
+                "publication", mainActivity.getIdWilayah(), "2ad01e6a21b015ea1ff8805ced02600c",
+                mainActivity.getBahasa(),idPub
         );
 
         //Callback
