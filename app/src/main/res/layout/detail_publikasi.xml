@@ -34,7 +34,8 @@
         android:layout_marginRight="20dp"
         android:layout_toRightOf="@id/detailCover"
         android:text="Tanggal Rilis: "
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/orange"
+        android:layout_marginTop="5dp"
         android:textSize="12dp"
         android:textStyle="italic" />
 
@@ -46,24 +47,10 @@
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/detailCover"
         android:text="Tanggal Update :"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/orange"
         android:textSize="12dp"
+        android:layout_marginTop="5dp"
         android:textStyle="italic" />
-<!--    <RelativeLayout-->
-<!--        android:id="@+id/titik"-->
-<!--        android:layout_width="5dp"-->
-<!--        android:layout_height="5dp"-->
-<!--        android:background="@drawable/bg_circle_blue_small"-->
-<!--        android:layout_toRightOf="@id/detailCover"-->
-<!--        android:layout_below="@id/detailTanggalUpdate"-->
-<!--        android:layout_marginTop="7dp"-->
-<!--        android:layout_marginLeft="10dp"-->
-<!--        android:layout_marginRight="10dp"-->
-
-<!--        >-->
-
-<!--    </RelativeLayout>-->
-
 
     <TextView
         android:id="@+id/detailUkuranFile"
@@ -72,9 +59,10 @@
         android:layout_below="@id/detailTanggalUpdate"
         android:layout_toRightOf="@id/detailCover"
         android:text="Ukuran File"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/orange"
         android:layout_marginLeft="5dp"
         android:textSize="12dp"
+        android:layout_marginTop="5dp"
         android:textStyle="italic" />
 
     <TextView
@@ -84,38 +72,52 @@
         android:layout_below="@id/detailUkuranFile"
         android:layout_toRightOf="@id/detailCover"
         android:text="ISSN/ISBN :"
-        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/orange"
         android:layout_marginLeft="5dp"
         android:textSize="12dp"
         android:textStyle="italic" />
-
+    <ScrollView
+        android:id="@+id/scrollDetailPub"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_below="@id/detailCover"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
     <TextView
         android:id="@+id/detailAbstract"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/detailIssn"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="2dp"
-        android:layout_toRightOf="@+id/detailCover"
-        android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+        android:text=""
         android:textAlignment="gravity"
         android:textColor="@color/colorPrimary"
         android:textSize="10dp"
         android:textStyle="italic"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="5dp"/>
-
+        android:layout_marginTop="10dp"/>
+    </ScrollView>
     <Button
         android:id="@+id/detailBttDownload"
-        android:layout_width="95dp"
-        android:layout_height="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
         android:textSize="10dp"
-        android:layout_below="@id/detailCover"
+        android:layout_below="@id/scrollDetailPub"
         android:background="@drawable/bg_circle_orange_small"
-        android:text="Unduh"
+        android:text="UNDUH"
         android:textColor="@color/white"
-        android:layout_margin="5dp">
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp">
 
     </Button>
-
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        ></ProgressBar>
 </RelativeLayout>

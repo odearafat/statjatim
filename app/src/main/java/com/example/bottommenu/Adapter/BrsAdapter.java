@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +47,8 @@ public class BrsAdapter extends RecyclerView.Adapter<BrsAdapter.BrsViewHolderAda
     Dialog dialogDetailBrs;
     BRSHolderApi brsHolderApi;
     MainActivity mainActivity;
+    ProgressBar progressBar;
+    RelativeLayout detailtitik;
 
     TextView detailJudulBrs, detailBrsDate, detailBrsSize, detailBrsUlasan;
     Button bttDownloadInDialog;
@@ -53,6 +57,8 @@ public class BrsAdapter extends RecyclerView.Adapter<BrsAdapter.BrsViewHolderAda
 
     public BrsAdapter(Context ct, List<BrsItem> BrsItemLists, BRSHolderApi brsHolderApi,
                       Dialog dialogDetailBrs, MainActivity mainActivity) {
+        mainActivity.getInternetConnectionCheck().isConnected();
+
         this.BrsItemList=BrsItemLists;
         context=ct;
         downloadFile=new DownloadFile(ct);
@@ -68,6 +74,9 @@ public class BrsAdapter extends RecyclerView.Adapter<BrsAdapter.BrsViewHolderAda
         this.detailBrsSize=dialogDetailBrs.findViewById(R.id.detailBrsSize);
         this.detailBrsUlasan=dialogDetailBrs.findViewById(R.id.detailBrsUlasan);
         this.bttDownloadInDialog=dialogDetailBrs.findViewById(R.id.bttDownloadInDialog);
+        this.progressBar=dialogDetailBrs.findViewById(R.id.progressBar);
+        this.detailtitik=dialogDetailBrs.findViewById(R.id.detailtitik);
+        //this.containerContent=dialogDetailBrs.findViewById(R.id.container_content);
     }
 
     @NonNull
@@ -140,16 +149,21 @@ public class BrsAdapter extends RecyclerView.Adapter<BrsAdapter.BrsViewHolderAda
             ulasanBrs=(TextView)itemView.findViewById(R.id.ulasanBrs);
             bttDetailBrs=(Button) itemView.findViewById(R.id.bttDetailBrs);
             downloadBrs=(Button) itemView.findViewById(R.id.bttUnduhBrs);
+
         }
     }
 
     public void viewOnclickListenerBrs(int position){
+
         Retrofit retrofit=new Retrofit.Builder().baseUrl("https://webapi.bps.go.id/v1/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
         BRSHolderApi jsonPlaceHolderApi=retrofit.create(BRSHolderApi.class);
 
         int idBrs=BrsItemList.get(position).getBrs_id();
         positionView=position;
+
+
+        supportViewDialogGone();
 
         Call<BrsDetail> call=jsonPlaceHolderApi.getView(
                 "pressrelease", mainActivity.getIdWilayah(), "2ad01e6a21b015ea1ff8805ced02600c"
@@ -183,8 +197,12 @@ public class BrsAdapter extends RecyclerView.Adapter<BrsAdapter.BrsViewHolderAda
                         downloadFile.actionDownload(BrsItemList.get(positionView).getSubj()+
                                         " - "+BrsItemList.get(positionView).getRl_date(),
                                 BrsItemList.get(positionView).getPdf());
+
                     }
                 });
+
+                supportViewDialogView();
+                //containerContent.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -196,5 +214,21 @@ public class BrsAdapter extends RecyclerView.Adapter<BrsAdapter.BrsViewHolderAda
         });
 
         dialogDetailBrs.show();
+    }
+
+    public void supportViewDialogGone(){
+        progressBar.setVisibility(View.VISIBLE);
+        detailJudulBrs.setText("");
+        detailBrsUlasan.setText("");
+        detailBrsSize.setText("");
+        detailBrsDate.setText("");
+        bttDownloadInDialog.setVisibility(View.GONE);
+        detailtitik.setVisibility(View.GONE);
+    }
+
+    public void supportViewDialogView(){
+        progressBar.setVisibility(View.GONE);
+        detailtitik.setVisibility(View.VISIBLE);
+        bttDownloadInDialog.setVisibility(View.VISIBLE);
     }
 }

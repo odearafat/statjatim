@@ -35,6 +35,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.BrsViewH
     FragmentManager fm;
 
     public SubjectAdapter(Context ct, List<SubjectItem> SubjectItems, FragmentManager fm, MainActivity mainActivity) {
+
         this.SubjectItemList=SubjectItems;
         context=ct;
         this.fm=fm;
@@ -44,6 +45,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.BrsViewH
     @NonNull
     @Override
     public BrsViewHolderAdapter onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        mainActivity.getInternetConnectionCheck().isConnected();
         LayoutInflater inflater=LayoutInflater.from(context);
         View view=inflater.inflate(R.layout.fragment_data_subject_lis,parent,false);
         return new BrsViewHolderAdapter(view);

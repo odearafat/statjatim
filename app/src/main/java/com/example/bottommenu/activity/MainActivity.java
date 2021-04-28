@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.bottommenu.HelperClass.InternetConnectionCheck;
 import com.example.bottommenu.R;
 import com.example.bottommenu.fragmen.BeritaFragment;
 import com.example.bottommenu.fragmen.BrsFragment;
@@ -38,6 +39,7 @@ public class MainActivity<selectedFragment> extends AppCompatActivity {
     String bahasa="ind";
     String wilayah="Provinsi Jawa timur";
     String idWilayah="3500";
+    InternetConnectionCheck internetConnectionCheck;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -48,7 +50,17 @@ public class MainActivity<selectedFragment> extends AppCompatActivity {
         mainActivity=this;
         //memunculkan HomeFragment diAwal
 
+        //declare Frame Manager
         fm= getSupportFragmentManager();
+
+        //declare Navigation View
+        navigationView=findViewById(R.id.space);
+
+        //Check Internet Connection
+        internetConnectionCheck=new InternetConnectionCheck(mainActivity);
+        internetConnectionCheck.isConnected();
+
+
         fm.beginTransaction().addToBackStack(null)
                 .replace(R.id.fragmen_container,new HomeFragment(this))
                 .commit();
@@ -59,7 +71,6 @@ public class MainActivity<selectedFragment> extends AppCompatActivity {
         dialogPilihWilayah.setContentView(R.layout.activity_pilih_wilayah_bahasa);
 
         //Navigation Bottom
-        navigationView=findViewById(R.id.space);
         navigationView.initWithSaveInstanceState(savedInstanceState);
         navigationView.addSpaceItem(new SpaceItem("", R.drawable.ic_publikasi_bottom));
         navigationView.addSpaceItem(new SpaceItem("", R.drawable.ic_berita_bottom));
@@ -76,15 +87,15 @@ public class MainActivity<selectedFragment> extends AppCompatActivity {
         navigationView.setSpaceItemIconSize(100);
         selectedFragment=null;
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                navigationView.showBadgeAtIndex(2, 2, getColor(R.color.orange));
-                navigationView.showBadgeAtIndex(1, 2, getColor(R.color.orange));
-                navigationView.showBadgeAtIndex(0, 2, getColor(R.color.orange));
-                navigationView.showBadgeAtIndex(3, 2, getColor(R.color.orange));
-            }
-        }, 2000);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                navigationView.showBadgeAtIndex(2, 2, getColor(R.color.orange));
+//                navigationView.showBadgeAtIndex(1, 2, getColor(R.color.orange));
+//                navigationView.showBadgeAtIndex(0, 2, getColor(R.color.orange));
+//                navigationView.showBadgeAtIndex(3, 2, getColor(R.color.orange));
+//            }
+//        }, 2000);
 
 
         navigationView.setSpaceOnClickListener(new SpaceOnClickListener() {
@@ -236,5 +247,21 @@ public class MainActivity<selectedFragment> extends AppCompatActivity {
 
     public Dialog getDialogPilihWilayah() {
         return dialogPilihWilayah;
+    }
+
+    public Fragment getSelectedFragment() {
+        return selectedFragment;
+    }
+
+    public void setSelectedFragment(Fragment selectedFragment) {
+        this.selectedFragment = selectedFragment;
+    }
+
+    public SpaceNavigationView getNavigationView() {
+        return navigationView;
+    }
+
+    public InternetConnectionCheck getInternetConnectionCheck() {
+        return internetConnectionCheck;
     }
 }

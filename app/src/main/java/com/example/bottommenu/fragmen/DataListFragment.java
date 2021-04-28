@@ -99,7 +99,7 @@ public class DataListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        mainActivity.getInternetConnectionCheck().isConnected();
         View view=inflater.inflate(R.layout.fragment_data_list,container,false);
 
         TextView tv=view.findViewById(R.id.title_data_list);

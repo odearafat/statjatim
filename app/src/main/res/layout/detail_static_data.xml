@@ -96,9 +96,9 @@
         android:background="@drawable/bg_dark_blue_btt_search"
         ></Button>
     <ProgressBar
-        android:id="@+id/progressBarItemBerita"
+        android:id="@+id/progressBar"
         android:layout_width="match_parent"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:layout_height="wrap_content"
         android:visibility="gone"></ProgressBar>
 

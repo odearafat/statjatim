@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,10 +58,14 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.BeritaView
     TextView detailJudulBerita, detailBeritaDate, detailBeritaKatKegiatan, detailBeritaUlasan;
     ImageView fotoKegiatan;
     MainActivity mainActivity;
-
+    RelativeLayout detailTitik;
+    ScrollView scrollViewDetail;
+    ProgressBar progressBar;
 
     public BeritaAdapter(Context ct, List<BeritaItem> beritaItem, BeritaHolderApi beritaHolderApis,
                          Dialog dialogDetailBerita, MainActivity mainActivity){
+        mainActivity.getInternetConnectionCheck().isConnected();
+
         this.beritaItems=beritaItem;
         context=ct;
         this.beritaHolderApi=beritaHolderApis;
@@ -73,6 +78,9 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.BeritaView
         this.detailBeritaDate=dialogDetailBerita.findViewById(R.id.detailTanggalRilisBerita);
         this.detailBeritaKatKegiatan=dialogDetailBerita.findViewById(R.id.detailBeritaJenisKegiatan);
         this.detailBeritaUlasan=dialogDetailBerita.findViewById(R.id.detailBeritaUlasan);
+        this.detailTitik=dialogDetailBerita.findViewById(R.id.detailtitik);
+        this.scrollViewDetail=dialogDetailBerita.findViewById(R.id.scrollViewDetail);
+        this.progressBar=dialogDetailBerita.findViewById(R.id.progressBar);
         this.fotoKegiatan=dialogDetailBerita.findViewById((R.id.fotoKegiatan));
     }
 
@@ -117,6 +125,7 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.BeritaView
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     //Toast.makeText(v.getContext(), position, Toast.LENGTH_SHORT).show();
+                    supportViewDialogGone();
 
                     //JsonHolderInterfaceClass
                     Retrofit retrofit=new Retrofit.Builder().baseUrl("https://webapi.bps.go.id/v1/api/")
@@ -151,6 +160,8 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.BeritaView
                             detailBeritaUlasan.setVisibility(View.VISIBLE);
                             fotoKegiatan.setClipToOutline(true);
                             new LoadImage(fotoKegiatan).execute(beritaDetail.getData().getPicture());
+
+                            supportViewDialogView();
                         }
 
                         @Override
@@ -227,6 +238,26 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.BeritaView
                 Log.d("I","Message"+t.getMessage());
             }
         });
+    }
+
+    public void supportViewDialogGone(){
+        progressBar.setVisibility(View.VISIBLE);
+        detailJudulBerita.setText("");
+        detailBeritaDate.setText("");
+        detailBeritaKatKegiatan.setText("");
+        detailBeritaUlasan.setText("");
+        detailTitik.setVisibility(View.GONE);
+        fotoKegiatan.setVisibility(View.GONE);
+        fotoKegiatan.setImageResource(0);
+        scrollViewDetail.setVisibility(View.GONE);
+    }
+
+    public void supportViewDialogView(){
+        progressBar.setVisibility(View.GONE);
+        detailTitik.setVisibility(View.VISIBLE);
+        fotoKegiatan.setImageResource(0);
+        fotoKegiatan.setVisibility(View.VISIBLE);
+        scrollViewDetail.setVisibility(View.VISIBLE);
     }
 
 }

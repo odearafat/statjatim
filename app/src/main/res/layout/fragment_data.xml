@@ -118,28 +118,7 @@
             android:background="@drawable/bg_dark_blue_btt_search"
             />
     </RelativeLayout>
-   <!-- <RelativeLayout
-        android:id="@+id/sosdukContainer"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/relativeLayout0"
-        android:background="@drawable/bg_circle_blue_big">
 
-        <TextView
-            android:id="@+id/tv_sosduk"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sosial dan Kependudukan"
-            android:textAlignment="center"
-            android:padding="5dp"
-            android:textSize="20dp"
-            android:textColor="@color/white"
-            ></TextView>
-
-    </RelativeLayout>-->
     <LinearLayout
         android:id="@+id/linear_layout1"
         android:layout_below="@id/relativeLayout0"
@@ -157,141 +136,16 @@
             android:numColumns="auto_fit"
                 />
     </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressBarData"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        ></ProgressBar>
 
-   <!-- <RelativeLayout
-        android:id="@+id/ekonomiContainer"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_below="@+id/linear_layout1"
-        android:background="@drawable/bg_circle_blue_big"
-        >
-        <RelativeLayout
-            android:id="@+id/containerLogoEkonomi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:layout_margin="5dp"
-            android:background="@drawable/bg_circle_orange_small">
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@drawable/ic_berita"
-                android:backgroundTint="@color/white">
-            </ImageView>
-        </RelativeLayout>
-        <TextView
-            android:id="@+id/tv_ekonomi"
-            android:layout_toRightOf="@id/containerLogoEkonomi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ekonomi dan Perdagangan"
-            android:textSize="20dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/white"
-            ></TextView>
-        <LinearLayout
-            android:id="@+id/linear_layout_konomi"
-            android:layout_below="@id/tv_ekonomi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_toRightOf="@+id/containerLogoEkonomi"
-            >
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/RecycleViewListEkonomi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
 
-        </LinearLayout>>
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="5dp">
-            <Button
-                android:id="@+id/arrowDataEkonomi"
-                android:layout_width="20dp"
-                android:layout_height="12.9dp"
-                android:layout_margin="10dp"
-                android:background="@drawable/ic_row_up"
-                android:backgroundTint="@color/white"></Button>
-        </RelativeLayout>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/pertanianContainer"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_below="@+id/ekonomiContainer"
-        android:background="@drawable/bg_circle_blue_big"
-        >
-        <RelativeLayout
-            android:id="@+id/containerLogoPertanian"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:layout_margin="5dp"
-            android:background="@drawable/bg_circle_orange_small">
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@drawable/ic_berita"
-                android:backgroundTint="@color/white">
-            </ImageView>
-        </RelativeLayout>
-        <TextView
-            android:id="@+id/tv_pertanian"
-            android:layout_toRightOf="@+id/containerLogoPertanian"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ekonomi dan Perdagangan"
-            android:textSize="20dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/white"
-            ></TextView>
-        <LinearLayout
-            android:id="@+id/linear_layout_pertanian"
-            android:layout_below="@id/tv_pertanian"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_toRightOf="@+id/containerLogoPertanian"
-            >
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/RecycleViewListPertanian"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>>
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="5dp">
-            <Button
-                android:id="@+id/arrowDataPertanian"
-                android:layout_width="20dp"
-                android:layout_height="12.9dp"
-                android:layout_margin="10dp"
-                android:background="@drawable/ic_row_up"
-                android:backgroundTint="@color/white"></Button>
-        </RelativeLayout>
-    </RelativeLayout>
-
--->
 </RelativeLayout>

@@ -138,17 +138,6 @@
             >
         </Button>
     </RelativeLayout>
-    <ProgressBar
-        android:id="@+id/progressBarHome"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:visibility="gone"
-        android:layout_gravity="center"
-        android:layout_centerInParent="true"
-        ></ProgressBar>
 
     <LinearLayout
         android:id="@+id/containerIndStrat2"
@@ -159,6 +148,19 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
+        <ProgressBar
+            android:id="@+id/progressBarHome"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            ></ProgressBar>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RecycleViewListDataHome"

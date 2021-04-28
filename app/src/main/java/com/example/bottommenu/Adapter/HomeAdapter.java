@@ -22,19 +22,33 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.example.bottommenu.R;
 import com.example.bottommenu.activity.MainActivity;
+import com.example.bottommenu.fragmen.ChatUsFragment;
+import com.example.bottommenu.fragmen.DataStrategisFragment;
 import com.example.bottommenu.fragmen.HomeFragment;
+import com.example.bottommenu.model.IndikatorStrategis;
 import com.example.bottommenu.model.IndikatorStrategisItem;
+import com.example.bottommenu.model.PublikasiItem;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.zip.Inflater;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolderAdapter> {
 
     List<IndikatorStrategisItem> indikatorStrategisItems;
     Context context;
+    MainActivity mainActivity;
 
-    public HomeAdapter(Context ct, List<IndikatorStrategisItem> indikatorStrategisItemss) {
+    public HomeAdapter(Context ct, List<IndikatorStrategisItem> indikatorStrategisItemss,
+                       MainActivity mainActivity) {
+        mainActivity.getInternetConnectionCheck().isConnected();
+
         this.indikatorStrategisItems=indikatorStrategisItemss;
+        this.mainActivity=mainActivity;
         context=ct;
     }
 
@@ -48,9 +62,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull final HomeViewHolderAdapter holder, final int position) {
+        Double valueData=(Double) indikatorStrategisItems.get(position).getNilai();
+        //DecimalFormat valueDataFormat = new DecimalFormat("###0,###");
+
+        NumberFormat numberFormatter = NumberFormat.getCurrencyInstance(new Locale("in", "ID"));
+        numberFormatter.setMaximumFractionDigits(2);
+        numberFormatter.setMinimumFractionDigits(2);
+
         holder.indikator.setText(indikatorStrategisItems.get(position).getTitle());
         holder.satuan.setText(indikatorStrategisItems.get(position).getUnit());
-        holder.nilai.setText(String.format("%.2f",indikatorStrategisItems.get(position).getNilai()));
+        holder.nilai.setText(numberFormatter.format(valueData).replace("Rp","").replace(",00",""));
         holder.description.setText(indikatorStrategisItems.get(position).getDesc());
         holder.line.setVisibility(View.GONE);
         holder.description.setVisibility(View.GONE);
@@ -91,18 +112,35 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
         public HomeViewHolderAdapter(@NonNull View itemView) {
             super(itemView);
 
-//            itemView.setOnClickListener(new View.OnClickListener() {
-////                @Override
-////                public void onClick(View v) {
-////                    Toast.makeText(v.getContext(), "Test Click", Toast.LENGTH_SHORT).show();
-////                }
-////            });
-            indikator=(TextView)itemView.findViewById(R.id.nmData);
-            description=(TextView)itemView.findViewById(R.id.description);
-            nilai=(TextView)itemView.findViewById(R.id.value);
-            satuan=(TextView)itemView.findViewById(R.id.satuan);
-            line=(RelativeLayout)itemView.findViewById(R.id.line);
-            arrow=(Button)itemView.findViewById(R.id.arrow);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    int position = getAdapterPosition();
+
+                    mainActivity.getFm().beginTransaction().addToBackStack(null)
+                            .replace(R.id.fragmen_container,
+                                    new DataStrategisFragment(indikatorStrategisItems.get(position),
+                                            mainActivity)).commit();
+                    //Toast.makeText(v.getContext(), "Test Click", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            indikator=itemView.findViewById(R.id.nmData);
+            description=itemView.findViewById(R.id.description);
+            nilai=itemView.findViewById(R.id.value);
+            satuan=itemView.findViewById(R.id.satuan);
+            line=itemView.findViewById(R.id.line);
+            arrow=itemView.findViewById(R.id.arrow);
         }
+    }
+    //public void set Change add PublikasiItemList
+    public void addPublikasiItemList(List<IndikatorStrategisItem> indikatorStrategisItemLi){
+
+        indikatorStrategisItems=new ArrayList<>(indikatorStrategisItems);
+        for(IndikatorStrategisItem puIt:indikatorStrategisItemLi){
+            indikatorStrategisItems.add(puIt);
+        }
+        notifyDataSetChanged();
     }
 }

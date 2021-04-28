@@ -41,6 +41,8 @@ import com.example.bottommenu.interfacePackage.IndikatorStrategisHolderApi;
 import com.example.bottommenu.model.IndikatorStrategis;
 import com.example.bottommenu.model.IndikatorStrategisItem;
 import com.example.bottommenu.model.Page;
+import com.example.bottommenu.model.Publikasi;
+import com.example.bottommenu.model.PublikasiItem;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -65,6 +67,8 @@ public class HomeFragment extends Fragment {
     public HomeFragment( MainActivity mainActivity) {
         this.mainActivity=mainActivity;
         this.fm=mainActivity.getFm();
+
+
     }
 
     enum LayoutManagerType {
@@ -77,6 +81,7 @@ public class HomeFragment extends Fragment {
     //RecycleView List of Data
     RecyclerView recyclerView;
     ProgressBar progressBar;
+    Retrofit retrofit;
     List<IndikatorStrategisItem>indikatorStrategisItems;
     IndikatorStrategisHolderApi indikatorStrategisHolderApi;
     String getResult="Null";
@@ -86,30 +91,49 @@ public class HomeFragment extends Fragment {
     ImageButton imgBttDataCorner;
 
     //help Asstes
-    Dialog dialogHelpSlider;
+    Dialog dialogHelpSlider, dialogLogin;
     ViewPager viewPager;
     LinearLayout dotsLayout;
     TextView [] dots;
 
+
+    //variable for pagination
+    private boolean isLoading;
+    private int pastVisibleItems, visibleItemCount, totalItemCount, previousTotal;
+    private int view_threshold;
+    private int pageNumber;
+
+    int allPageNumber;
+
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mainActivity.getInternetConnectionCheck().isConnected();
 
+        isLoading=true;
+        pastVisibleItems =0;
+        visibleItemCount=0;
+        totalItemCount=0;
+        previousTotal =0;
+        view_threshold=10;
+        pageNumber=1;
         //Call FragmentHome
         View v=inflater.inflate(R.layout.fragment_home,container,false);
         v.setTag("RecyclerViewFragment");
 
         //RecycleView List of Data
-        recyclerView=(RecyclerView) v.findViewById(R.id.RecycleViewListDataHome);
-        progressBar=(ProgressBar) v.findViewById(R.id.progressBarHome);
-        helpButton=(ImageButton) v.findViewById(R.id.helpButton);
-        settingButton=(ImageButton) v.findViewById(R.id.settingButton);
+        recyclerView= v.findViewById(R.id.RecycleViewListDataHome);
+        progressBar= v.findViewById(R.id.progressBarHome);
+        helpButton= v.findViewById(R.id.helpButton);
+        settingButton= v.findViewById(R.id.settingButton);
 
 
         //Button untuk AppBPS
-        imgBttDavita=(ImageButton) v.findViewById(R.id.bttDavita);
-        imgBttChatUs=(ImageButton) v.findViewById(R.id.bttChatUs);
-        imgBttDataCorner=(ImageButton) v.findViewById(R.id.bttDataCorner);
+        imgBttDavita= v.findViewById(R.id.bttDavita);
+        imgBttChatUs= v.findViewById(R.id.bttChatUs);
+        imgBttDataCorner= v.findViewById(R.id.bttDataCorner);
 
         //Dialog pilih Wilayah handler
         dialogHelpSlider=new Dialog(mainActivity.getWindow().getContext());
@@ -121,7 +145,6 @@ public class HomeFragment extends Fragment {
         addDots(0);
         viewPager.addOnPageChangeListener(changeListener);
 
-
         helpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,6 +155,18 @@ public class HomeFragment extends Fragment {
             }
         });
 
+
+        //Dialog pilih Wilayah handler
+        dialogLogin=new Dialog(mainActivity.getWindow().getContext());
+        dialogLogin.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogLogin.setContentView(R.layout.activity_login);
+
+        settingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogLogin.show();
+            }
+        });
 
 
         // LinearLayoutManager is used here, this will layout the elements in a similar fashion
@@ -149,52 +184,14 @@ public class HomeFragment extends Fragment {
 
 
         //Retrofit-Untuk Ambil Data dari API
-        Retrofit retrofit=new Retrofit.Builder()
+        retrofit=new Retrofit.Builder()
                 .baseUrl("https://webapi.bps.go.id/v1/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        //JsonHolderInterfaceClass
-        indikatorStrategisHolderApi=retrofit.create(IndikatorStrategisHolderApi.class);
-        Call<IndikatorStrategis> call=indikatorStrategisHolderApi.getList(
-                "indicators", "3500", "2ad01e6a21b015ea1ff8805ced02600c", "1",
-                "ind"
-        );
+        //Landing page publication menu
+        getListData();
 
-        //progressbar muncul
-        progressBar.setVisibility(View.VISIBLE);
-
-        //Callback
-        call.enqueue(new Callback<IndikatorStrategis>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-
-            @Override
-            public void onResponse(Call<IndikatorStrategis> call, Response<IndikatorStrategis> response) {
-
-                if(!response.isSuccessful()){
-                    getResult="Code : "+response.code();
-                    return;
-                }
-                IndikatorStrategis indikatorStrategis=response.body();
-
-                //Cast to Page
-                Page page=new Gson().fromJson(indikatorStrategis.getData().get(0).toString(), Page.class);
-
-                //Cast to List of IndikatorStrategis Item
-                indikatorStrategisItems = stringToArray(new Gson().toJson(indikatorStrategis.getData().get(1)), IndikatorStrategisItem[].class);
-
-                homeAdapter=new HomeAdapter(getContext(),indikatorStrategisItems);
-                recyclerView.setAdapter(homeAdapter);
-
-                progressBar.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onFailure(Call<IndikatorStrategis> call, Throwable t) {
-                getResult="Gagal";
-                Log.d("I","Message"+t.getMessage());
-            }
-        });
 
         //Image Slider
         ImageSlider imageSlider= v.findViewById(R.id.slider);
@@ -243,7 +240,7 @@ public class HomeFragment extends Fragment {
                 //fm.getSupportFragmentManager()
                 fm.beginTransaction().addToBackStack(null)
                         .replace(R.id.fragmen_container,
-                                new ChatUsFragment()).commit();
+                                new ChatUsFragment(mainActivity)).commit();
 
             }
         });
@@ -256,7 +253,7 @@ public class HomeFragment extends Fragment {
                 //        .beginTransaction()
                 fm.beginTransaction().addToBackStack(null)
                         .replace(R.id.fragmen_container,
-                                new DataCornerFragment()).commit();
+                                new DataCornerFragment(mainActivity)).commit();
 
             }
         });
@@ -342,5 +339,120 @@ public class HomeFragment extends Fragment {
 
         }
     };
+
+    public void getListData(){
+
+        //JsonHolderInterfaceClass
+        indikatorStrategisHolderApi=retrofit.create(IndikatorStrategisHolderApi.class);
+        Call<IndikatorStrategis> call=indikatorStrategisHolderApi.getList(
+                "indicators", "3500", "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
+                "ind"
+        );
+
+        //progressbar muncul
+        progressBar.setVisibility(View.VISIBLE);
+
+        //Callback
+        call.enqueue(new Callback<IndikatorStrategis>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+
+            @Override
+            public void onResponse(Call<IndikatorStrategis> call, Response<IndikatorStrategis> response) {
+
+                if(!response.isSuccessful()){
+                    getResult="Code : "+response.code();
+                    return;
+                }
+                IndikatorStrategis indikatorStrategis=response.body();
+
+                //Cast to Page
+                Page page=new Gson().fromJson(indikatorStrategis.getData().get(0).toString(), Page.class);
+                allPageNumber=page.getPages();
+
+                //Cast to List of IndikatorStrategis Item
+                indikatorStrategisItems = stringToArray(new Gson().toJson(indikatorStrategis.getData().get(1)), IndikatorStrategisItem[].class);
+
+                homeAdapter=new HomeAdapter(getContext(),indikatorStrategisItems, mainActivity);
+                recyclerView.setAdapter(homeAdapter);
+
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(Call<IndikatorStrategis> call, Throwable t) {
+                getResult="Gagal";
+                Log.d("I","Message"+t.getMessage());
+            }
+        });
+
+        //recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                visibleItemCount=mLayoutManager.getChildCount();
+                totalItemCount=mLayoutManager.getItemCount();
+                pastVisibleItems=((LinearLayoutManager)mLayoutManager).findFirstVisibleItemPosition();
+
+                if(dy>0){
+                    if(isLoading){
+                        if(totalItemCount>previousTotal){
+                            isLoading=false;
+                            previousTotal=totalItemCount;
+                        }
+                    }
+
+                    if(!isLoading&&(totalItemCount-visibleItemCount)<=(pastVisibleItems+view_threshold)
+                            && pageNumber<allPageNumber){
+                        pageNumber++;
+                        performPagination();
+                        isLoading=true;
+                    }
+                }
+            }
+        });
+    }
+
+    public void performPagination(){
+        //Callback
+        Call<IndikatorStrategis> call=indikatorStrategisHolderApi.getList(
+                "indicators", "3500", "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
+                "ind"
+        );
+
+        //Progressbar Visible
+        progressBar.setVisibility(View.VISIBLE);
+
+        call.enqueue(new Callback<IndikatorStrategis>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+
+            @Override
+            public void onResponse(Call<IndikatorStrategis> call, Response<IndikatorStrategis> response) {
+
+                if(!response.isSuccessful()){
+                    getResult="Code : "+response.code();
+                    return;
+                }
+                IndikatorStrategis indikatorStrategis=response.body();
+
+                //Cast to List of Publikasi Item
+                List<IndikatorStrategisItem>indikatorStrategisItem2 = stringToArray(new Gson().toJson(indikatorStrategis.getData().get(1)), IndikatorStrategisItem[].class);
+
+                //publikasiItems.addAll(publikasiItem2);
+                homeAdapter.addPublikasiItemList(indikatorStrategisItem2);
+
+                //Progressbar Gone
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(Call<IndikatorStrategis> call, Throwable t) {
+                getResult="Gagal";
+                Log.d("I","Message"+t.getMessage());
+            }
+        });
+    }
+
 
 }

@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,10 +52,14 @@ public class DataStaticAdapter extends RecyclerView.Adapter<DataStaticAdapter.Da
     Integer positionView=0;
     WebView detailStaticDataHtml;
     MainActivity mainActivity;
+    ProgressBar progressBar;
+    RelativeLayout detailTitik;
 
     Dialog dialogDetailDataStatic;
     public DataStaticAdapter(Context ct, List<DataStaticItem> DataStaticLists, DataStaticHolderApi dataStaticHolderApi,
                              Dialog dialogDetailDataStatic, MainActivity mainActivity) {
+        mainActivity.getInternetConnectionCheck().isConnected();
+
         this.DataStaticItemList=DataStaticLists;
         context=ct;
         downloadFile=new DownloadFile(ct);
@@ -65,8 +71,10 @@ public class DataStaticAdapter extends RecyclerView.Adapter<DataStaticAdapter.Da
         this.detailJudulStaticData=dialogDetailDataStatic.findViewById(R.id.detailJudulData);
         this.detailStaticDataRlDate=dialogDetailDataStatic.findViewById(R.id.detailTanggalRilisData);
         this.detailStaticDataSize=dialogDetailDataStatic.findViewById(R.id.detailDataSize);
+        this.detailTitik=dialogDetailDataStatic.findViewById(R.id.detailtitik);
         this.detailStaticDataHtml=dialogDetailDataStatic.findViewById(R.id.detailStaticDataHtml);
         this.detailStaticTableDownloadButton=dialogDetailDataStatic.findViewById(R.id.bttDownloadInDialog);
+        this.progressBar=dialogDetailDataStatic.findViewById(R.id.progressBar);
     }
 
     @NonNull
@@ -151,6 +159,7 @@ public class DataStaticAdapter extends RecyclerView.Adapter<DataStaticAdapter.Da
     }
 
     public void viewOnclickListenerDataStatic(int position){
+        supportViewDialogGone();
         Retrofit retrofit=new Retrofit.Builder().baseUrl("https://webapi.bps.go.id/v1/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
         DataStaticHolderApi jsonPlaceHolderApi=retrofit.create(DataStaticHolderApi.class);
@@ -194,6 +203,7 @@ public class DataStaticAdapter extends RecyclerView.Adapter<DataStaticAdapter.Da
                                 DataStaticItemList.get(positionView).getExcel());
                     }
                 });
+                supportViewDialogView();
             }
 
             @Override
@@ -205,5 +215,22 @@ public class DataStaticAdapter extends RecyclerView.Adapter<DataStaticAdapter.Da
         });
 
         dialogDetailDataStatic.show();
+    }
+
+    public void supportViewDialogGone(){
+        progressBar.setVisibility(View.VISIBLE);
+        detailJudulStaticData.setText("");
+        detailStaticDataRlDate.setText("");
+        detailStaticDataSize.setText("");
+        detailStaticDataHtml.setVisibility(View.GONE);
+        detailStaticTableDownloadButton.setVisibility(View.GONE);
+        detailTitik.setVisibility(View.GONE);
+    }
+
+    public void supportViewDialogView(){
+        progressBar.setVisibility(View.GONE);
+        detailStaticDataHtml.setVisibility(View.VISIBLE);
+        detailStaticTableDownloadButton.setVisibility(View.VISIBLE);
+        detailTitik.setVisibility(View.VISIBLE);
     }
 }

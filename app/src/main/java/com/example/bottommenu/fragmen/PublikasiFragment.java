@@ -98,6 +98,8 @@ public class PublikasiFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mainActivity.getInternetConnectionCheck().isConnected();
+
         //Call FragmentPublikasi
         View v=inflater.inflate(R.layout.fragment_publikasi,container,false);
         v.setTag("RecyclerViewFragment");

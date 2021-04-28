@@ -4,35 +4,58 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ImageView
-        android:id="@+id/slider_image"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/home_daun" />
-
+        >
+        <ImageView
+            android:id="@+id/heading_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/ic_help_1"
+            android:layout_centerHorizontal="true"
+             />
+        <ImageView
+            android:id="@+id/heading_help"
+            android:layout_width="250dp"
+            android:layout_height="37.051dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/ic_help_header"
+            ></ImageView>
     <TextView
-        android:id="@+id/slider_heading"
+        android:id="@+id/heading_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="TextView"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/slider_image" />
+        android:layout_marginTop="27dp"
+        android:text="Tentang Aplikasi"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginLeft="60dp"
+        android:textSize="15dp"
+         />
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_below="@+id/heading_image">
     <TextView
-        android:id="@+id/slider_desc"
-        android:layout_width="wrap_content"
+        android:id="@+id/desc_text"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="10dp"
         android:layout_marginTop="10dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/slider_heading" />
+        android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book t has survived not only five centuries, . . .
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book t has survived not only five centuries, . . .
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book t has survived not only five centuries, . . . "
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_below="@id/heading_image"
+         /></ScrollView>
+</RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

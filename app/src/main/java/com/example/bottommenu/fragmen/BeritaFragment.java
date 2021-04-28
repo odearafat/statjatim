@@ -87,6 +87,7 @@ public class BeritaFragment extends Fragment {
 
     public BeritaFragment(MainActivity mainActivity){
         this.mainActivity=mainActivity;
+
     }
     protected BeritaFragment.LayoutManagerType mCurrentLayoutManagerType;
 
@@ -98,6 +99,8 @@ public class BeritaFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mainActivity.getInternetConnectionCheck().isConnected();
+
         //Call FragmentBerita
         View v=inflater.inflate(R.layout.fragment_berita,container,false);
         v.setTag("RecyclerViewFragment");

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bttn_white"
+    tools:context=".activity.MainActivity"
+    android:paddingRight="30dp"
+    android:paddingLeft="30dp">
+
+    <ImageView
+        android:id="@+id/imageLoginUser"
+        android:layout_width="300dp"
+        android:layout_marginTop="20dp"
+        android:layout_height="180dp"
+        android:background="@drawable/ic_login_illustration"
+        android:layout_centerHorizontal="true"></ImageView>
+
+    <TextView
+        android:id="@+id/loginHeadingTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="LOGIN USER"
+        android:textSize="18dp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_below="@id/imageLoginUser"
+        android:layout_centerHorizontal="true"
+        ></TextView>
+
+    <TextView
+        android:id="@+id/emailLoginTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email "
+        android:paddingRight="5dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_below="@id/loginHeadingTv"
+        android:layout_marginTop="10dp"
+        ></TextView>
+    <TextView
+        android:id="@+id/bintangMailLoginTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="* "
+        android:textColor="@color/orange"
+        android:layout_below="@id/loginHeadingTv"
+        android:layout_toRightOf="@+id/emailLoginTv"
+        android:layout_marginTop="10dp"
+        ></TextView>
+    <EditText
+        android:id="@+id/emailLoginEt"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_below="@id/emailLoginTv"
+        android:layout_marginTop="10dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:textSize="7pt"
+        android:background="@drawable/bg_blue_spinner"
+        android:inputType="textEmailAddress">
+    </EditText>
+    <TextView
+        android:id="@+id/passwordLoginTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password "
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_below="@id/emailLoginEt"
+        android:layout_marginTop="10dp"
+        ></TextView>
+    <TextView
+        android:id="@+id/passwordMailLoginTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="* "
+        android:textColor="@color/orange"
+        android:layout_below="@id/emailLoginEt"
+        android:layout_toRightOf="@+id/passwordLoginTv"
+        android:layout_marginTop="10dp"
+        ></TextView>
+    <EditText
+        android:id="@+id/passwordLoginEt"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_below="@id/passwordMailLoginTv"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:textSize="7pt"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_blue_spinner"
+        android:inputType="textPassword">
+    </EditText>
+    <TextView
+        android:id="@+id/buatAkunBaruTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Buat Akun Baru"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_below="@+id/passwordLoginEt"
+        android:textSize="10dp"
+        android:layout_marginTop="10dp"
+        ></TextView>
+
+    <TextView
+        android:id="@+id/lupaPasswordTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/passwordLoginEt"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentRight="true"
+        android:text="Lupa Password"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="10dp"></TextView>
+    <Button
+        android:id="@+id/bttLogin"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:text="Login"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/lupaPasswordTv"
+        android:textColor="@color/white"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_dark_blue_big_circle"
+        ></Button>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/bg_orangeline_whitefill"
+        android:layout_below="@+id/bttLogin">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            >
+            <ImageView
+                android:id="@+id/ic_google"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/ic_google">
+            </ImageView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/ic_google"
+                android:text="Login dengan akun Google"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/orange"
+                ></TextView>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

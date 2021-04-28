@@ -10,6 +10,8 @@ public class IndikatorStrategisItem {
     private String desc;
     private String data_source;
 
+    private Integer indicator_id;
+
     @SerializedName("value")
     private double nilai;
     private String unit;
@@ -32,6 +34,10 @@ public class IndikatorStrategisItem {
 
     public String getUnit() {
         return unit;
+    }
+
+    public Integer getIndicator_id() {
+        return indicator_id;
     }
 }
 

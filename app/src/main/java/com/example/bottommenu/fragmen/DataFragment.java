@@ -63,7 +63,7 @@ public class DataFragment extends Fragment {
     protected RecyclerView.LayoutManager mLayoutManager;
     RecyclerView recyclerView;
     SubjectAdapter subjectAdapter;
-    //ProgressBar progressBar;
+    ProgressBar progressBar;
     List<SubjectItem> subjectItems;
     ImageButton buttonBackData, bttSetData;
 
@@ -109,6 +109,9 @@ public class DataFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mainActivity.getInternetConnectionCheck().isConnected();
+
+
         //Call FragmentBrs
         View v=inflater.inflate(R.layout.fragment_data,container,false);
         v.setTag("RecyclerViewFragment");
@@ -116,7 +119,7 @@ public class DataFragment extends Fragment {
 
         //RecycleView List of Data
         recyclerView=(RecyclerView) v.findViewById(R.id.RecycleViewListSosduk);
-        //progressBar=(ProgressBar)v.findViewById(R.id.progressBarBrs);
+        progressBar=(ProgressBar)v.findViewById(R.id.progressBarData);
         cariButton=(Button) v.findViewById(R.id.bttFindData);
         cariEditText=(EditText) v.findViewById(R.id.editTextFindData);
         buttonBackData=(ImageButton) v.findViewById(R.id.buttonBackData);
@@ -191,6 +194,7 @@ public class DataFragment extends Fragment {
                 "subject", mainActivity.getIdWilayah(), "2ad01e6a21b015ea1ff8805ced02600c", ""+pageNumber,
                 mainActivity.getBahasa(), cariEditText.getText().toString()
         );
+        progressBar.setVisibility(View.VISIBLE);
         call.enqueue(new Callback<Subject>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -268,6 +272,9 @@ public class DataFragment extends Fragment {
                                 });
                                 subjectAdapter=new SubjectAdapter(getContext(),subjectItems,fm, mainActivity );
                                 recyclerView.setAdapter(subjectAdapter);
+
+                                //Progressbar Gone
+                                progressBar.setVisibility(View.GONE);
                             }
 
 

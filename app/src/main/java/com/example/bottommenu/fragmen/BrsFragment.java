@@ -89,7 +89,9 @@ public class BrsFragment extends Fragment {
     }
 
     public BrsFragment(MainActivity mainActivity){
+
         this.mainActivity=mainActivity;
+
     }
 
     protected BrsFragment.LayoutManagerType mCurrentLayoutManagerType;
@@ -100,6 +102,8 @@ public class BrsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mainActivity.getInternetConnectionCheck().isConnected();
+
         //Call FragmentBrs
         View v=inflater.inflate(R.layout.fragment_brs,container,false);
         v.setTag("RecyclerViewFragment");

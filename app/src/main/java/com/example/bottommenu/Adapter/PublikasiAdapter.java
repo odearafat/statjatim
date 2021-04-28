@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +59,7 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Publ
     private List<PublikasiItem> publikasiItemList;
     Dialog dialogDetailPublikasi;
     TextView detailJudulPublikasi, detailRl_date, detailUpdt_date, detailIssn, detailSize, detailAbstract;
+    ProgressBar progressBar;
     Button detailDownloadbutton;
     ImageView detailCover;
     Integer positionInView;
@@ -69,6 +71,7 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Publ
 
     public PublikasiAdapter(Context ct, List<PublikasiItem> publikasiItems, Dialog dialogDetailPublikasis,
                             MainActivity mainActivity) {
+
         this.publikasiItemList=publikasiItems;
         context=ct;
         this.dialogDetailPublikasi=dialogDetailPublikasis;
@@ -82,6 +85,7 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Publ
         this.detailIssn=dialogDetailPublikasi.findViewById(R.id.detailIssn);
         this.detailSize=dialogDetailPublikasi.findViewById(R.id.detailUkuranFile);
         this.detailAbstract=dialogDetailPublikasi.findViewById(R.id.detailAbstract);
+        this.progressBar=dialogDetailPublikasi.findViewById(R.id.progressBar);
 
         this.detailCover=dialogDetailPublikasi.findViewById(R.id.detailCover);
         this.detailDownloadbutton=dialogDetailPublikasi.findViewById(R.id.detailBttDownload);
@@ -91,6 +95,7 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Publ
     @NonNull
     @Override
     public PublikasiViewHolderAdapter onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         LayoutInflater inflater=LayoutInflater.from(context);
         View view=inflater.inflate(R.layout.fragment_publikasi_list_data,parent,false);
         return new PublikasiViewHolderAdapter(view);
@@ -125,12 +130,17 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Publ
 
     public void viewActionClicklistener(int position){
         //JsonHolderInterfaceClass
+        mainActivity.getInternetConnectionCheck().isConnected();
+
+
         Retrofit retrofit=new Retrofit.Builder().baseUrl("https://webapi.bps.go.id/v1/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
         PublikasiHolderApi jsonPlaceHolderApi=retrofit.create(PublikasiHolderApi.class);
 
         String idPub=publikasiItemList.get(position).getPub_id();
         positionInView=position;
+
+        supportViewDialogGone();
 
         //354475b2d04ee5be705892c01701899d
         Call<PublikasiView> call=jsonPlaceHolderApi.getView(
@@ -160,6 +170,8 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Publ
 
                 detailCover.setClipToOutline(true);
                 new LoadImage(detailCover).execute(publikasiItemList.get(positionInView).getCover());
+
+                supportViewDialogView();
             }
 
             @Override
@@ -279,5 +291,24 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Publ
             bttDetailPub=(Button)itemView.findViewById(R.id.bttDetailPub);
             bttUnduhPub=(Button)itemView.findViewById(R.id.bttUnduhPub);
         }
+    }
+
+    public void supportViewDialogGone(){
+        progressBar.setVisibility(View.VISIBLE);
+        detailAbstract.setText("");
+        detailIssn.setText("");
+        detailJudulPublikasi.setText("");
+        detailRl_date.setText("");
+        detailSize.setText("");
+        detailUpdt_date.setText("");
+        detailDownloadbutton.setVisibility(View.GONE);
+        detailCover.setVisibility(View.GONE);
+        detailCover.setImageResource(0);
+    }
+
+    public void supportViewDialogView(){
+        progressBar.setVisibility(View.GONE);
+        detailDownloadbutton.setVisibility(View.VISIBLE);
+        detailCover.setVisibility(View.VISIBLE);
     }
 }
