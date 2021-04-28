@@ -12,7 +12,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bottommenu.HelperClass.InternetConnectionCheck;
@@ -35,11 +38,14 @@ public class MainActivity<selectedFragment> extends AppCompatActivity {
     Fragment selectedFragment;
     MainActivity mainActivity;
     boolean homePressed = true, doubleBackToExitPressedOnce = false;
-    Dialog dialogPilihWilayah;
+    Dialog dialogPilihWilayah, downloadStatus;
     String bahasa="ind";
     String wilayah="Provinsi Jawa timur";
     String idWilayah="3500";
     InternetConnectionCheck internetConnectionCheck;
+    ImageView iconDownloadStatus;
+    TextView tvDownloadStatusHeading, tvDownloadStatusDetail;
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -47,8 +53,8 @@ public class MainActivity<selectedFragment> extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Declare Mainactivity
         mainActivity=this;
-        //memunculkan HomeFragment diAwal
 
         //declare Frame Manager
         fm= getSupportFragmentManager();
@@ -69,6 +75,16 @@ public class MainActivity<selectedFragment> extends AppCompatActivity {
         dialogPilihWilayah=new Dialog(MainActivity.this);
         dialogPilihWilayah.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialogPilihWilayah.setContentView(R.layout.activity_pilih_wilayah_bahasa);
+
+        //Dialog pilih Wilayah handler
+        downloadStatus=new Dialog(MainActivity.this);
+        downloadStatus.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        downloadStatus.setContentView(R.layout.activity_download_status);
+        iconDownloadStatus = downloadStatus.findViewById(R.id.icon_download_status);
+        tvDownloadStatusHeading = downloadStatus.findViewById(R.id.tv_download_status_heading);
+        tvDownloadStatusDetail = downloadStatus.findViewById(R.id.tv_download_status_detail);
+
+
 
         //Navigation Bottom
         navigationView.initWithSaveInstanceState(savedInstanceState);
@@ -263,5 +279,21 @@ public class MainActivity<selectedFragment> extends AppCompatActivity {
 
     public InternetConnectionCheck getInternetConnectionCheck() {
         return internetConnectionCheck;
+    }
+
+    public Dialog getDownloadStatus() {
+        return downloadStatus;
+    }
+
+    public ImageView getIconDownloadStatus() {
+        return iconDownloadStatus;
+    }
+
+    public TextView getTvDownloadStatusHeading() {
+        return tvDownloadStatusHeading;
+    }
+
+    public TextView getTvDownloadStatusDetail() {
+        return tvDownloadStatusDetail;
     }
 }

@@ -2,6 +2,7 @@ package com.example.bottommenu.fragmen;
 
 
 import android.app.DownloadManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.bottommenu.HelperClass.MyWebViewClient;
 import com.example.bottommenu.R;
 import com.example.bottommenu.activity.MainActivity;
 import com.example.bottommenu.model.IndikatorStrategisItem;
@@ -63,6 +65,7 @@ public class DataStrategisFragment extends Fragment {
     ImageButton buttonBackChatUs;
     IndikatorStrategisItem indikatorStrategisItem;
     MainActivity mainActivity;
+    ProgressDialog pd;
 
     public DataStrategisFragment(IndikatorStrategisItem indikatorStrategisItem, MainActivity mainActivity) {
         // Required empty public constructor
@@ -109,6 +112,8 @@ public class DataStrategisFragment extends Fragment {
         WebView wv_davita=view.findViewById(R.id.wvChatUs);
         buttonBackChatUs=(ImageButton)view.findViewById(R.id.buttonBackChatUs);
 
+
+
         TextView tvBarChatUs=view.findViewById(R.id.textBarChatUs);
         tvBarChatUs.setText("Indikator Strategis");
 
@@ -127,11 +132,16 @@ public class DataStrategisFragment extends Fragment {
         wv_davita.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
 
+        pd= new ProgressDialog(mainActivity.getWindow().getContext());
+        pd.setMessage("Mohon Menunggu. . .");
+        pd.show();
+        wv_davita.setWebViewClient(new MyWebViewClient(pd));
+        //web_view.loadUrl("ur site name");
 
-
-        wv_davita.setWebViewClient(new WebViewClient());
+        //wv_davita.setWebViewClient(new WebViewClient());
         wv_davita.loadUrl("https://webapps.bps.go.id/jatim/statjatim/index.php?id="+indikatorStrategisItem.getIndicator_id());
         //wv_davita.loadUrl("https://jatim.bps.go.id");
+
 
 //        wv_davita.setDownloadListener(new DownloadListener() {
 //            @Override
@@ -262,3 +272,4 @@ public class DataStrategisFragment extends Fragment {
         }.execute(url, filename);
     }
 }
+

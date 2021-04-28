@@ -13,15 +13,20 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
+import com.example.bottommenu.activity.MainActivity;
+
 import static androidx.core.app.ActivityCompat.requestPermissions;
 
 public class DownloadFile {
 
     Context context;
     public static final int PERMISSION_STORAGE_CODE = 1000;
-    public DownloadFile(Context contexts){
+    MainActivity mainActivity;
+    String jenisDownloatan;
+    public DownloadFile(Context contexts, MainActivity mainActivity, String jenisDownloatan){
         this.context=contexts;
-
+        this.mainActivity=mainActivity;
+        this.jenisDownloatan=jenisDownloatan;
     }
 
     //actionListener Download Publikasi
@@ -36,12 +41,12 @@ public class DownloadFile {
                 requestPermissions((Activity) context,permissions,PERMISSION_STORAGE_CODE);
             }else{
                 //Permission Granted, Perform Download
-                String filename=fileNames+".pdf";
+                String filename=fileNames.replaceAll("[\\\\/:*?\"<>|]", " ")+".pdf";
                 downloadfile(filename,urls);
             }
         }else{
             //System OS is less than marsmallow, perform download
-            String filename=fileNames+".pdf";
+            String filename=fileNames.replaceAll("[\\\\/:*?\"<>|]", " ")+".pdf";
             downloadfile(filename,urls);
         }
     }
@@ -58,12 +63,12 @@ public class DownloadFile {
                 requestPermissions((Activity) context,permissions,PERMISSION_STORAGE_CODE);
             }else{
                 //Permission Granted, Perform Download
-                String filename=fileNames+".xlsx";
+                String filename=fileNames.replaceAll("[\\\\/:*?\"<>|]", " ")+".xlsx";
                 downloadfile(filename,urls);
             }
         }else{
             //System OS is less than marsmallow, perform download
-            String filename=fileNames+".xlsx";
+            String filename=fileNames.replaceAll("[\\\\/:*?\"<>|]", " ")+".xlsx";
             downloadfile(filename,urls);
         }
     }
@@ -77,7 +82,7 @@ public class DownloadFile {
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI |
                 DownloadManager.Request.NETWORK_MOBILE);
 
-        request.setTitle(filename);//Set Title in Download Notification
+        request.setTitle(filename.replaceAll("[\\\\/:*?\"<>|]", " "));//Set Title in Download Notification
         request.setDescription("Download Publikasi . .");//Set Description in Download Notification
 
         request.allowScanningByMediaScanner();
@@ -88,6 +93,8 @@ public class DownloadFile {
         DownloadManager manager =(DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         manager.enqueue(request);
 
+        mainActivity.getTvDownloadStatusHeading().setText(jenisDownloatan+"  Telah Didownload");
+        mainActivity.getDownloadStatus().show();
     }
 
 

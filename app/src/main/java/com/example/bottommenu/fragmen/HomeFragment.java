@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,6 +90,7 @@ public class HomeFragment extends Fragment {
     ImageButton imgBttDavita;
     ImageButton imgBttChatUs;
     ImageButton imgBttDataCorner;
+    RelativeLayout allIndicatorStrat;
 
     //help Asstes
     Dialog dialogHelpSlider, dialogLogin;
@@ -155,6 +157,16 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        //indicator Strategis Button All
+        allIndicatorStrat=v.findViewById(R.id.all_Indicator_Strat);
+        allIndicatorStrat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fm.beginTransaction().addToBackStack(null)
+                                .replace(R.id.fragmen_container,
+                                        new IndicatorStrategisFragment(mainActivity)).commit();
+            }
+        });
 
         //Dialog pilih Wilayah handler
         dialogLogin=new Dialog(mainActivity.getWindow().getContext());
@@ -235,9 +247,6 @@ public class HomeFragment extends Fragment {
         imgBttChatUs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //AppCompatActivity activity=(AppCompatActivity) v.getContext();
-                //activity.getSupportFragmentManager()
-                //fm.getSupportFragmentManager()
                 fm.beginTransaction().addToBackStack(null)
                         .replace(R.id.fragmen_container,
                                 new ChatUsFragment(mainActivity)).commit();
@@ -281,14 +290,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void setRecyclerViewLayoutManager(LayoutManagerType layoutManagerType) {
-        //int scrollPosition = 0;
-
-        // If a layout manager has already been set, get current scroll position.
-        //if (recyclerView.getLayoutManager() != null) {
-        //    scrollPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
-       //             .findFirstCompletelyVisibleItemPosition();
-        //}
-
         switch (layoutManagerType) {
             case GRID_LAYOUT_MANAGER:
                 mLayoutManager = new GridLayoutManager(getActivity(), SPAN_COUNT);
@@ -323,17 +324,18 @@ public class HomeFragment extends Fragment {
             dots[position].setTextColor(getResources().getColor(R.color.orange));
         }
     }
+
+
+    //ViewPager OnClickListener
     ViewPager.OnPageChangeListener changeListener=new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
         }
 
         @Override
         public void onPageSelected(int position) {
             addDots(position);
         }
-
         @Override
         public void onPageScrollStateChanged(int state) {
 

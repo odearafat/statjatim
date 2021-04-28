@@ -56,6 +56,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="50dp"
             android:backgroundTint="@color/white"
+            android:alpha=".1"
             android:background="@drawable/ic_login_button"/>
 
         <ImageButton
@@ -112,6 +113,10 @@
             android:text="Indikator Strategis"
             android:textColor="@color/white"
             android:textSize="15dp" />
+       <RelativeLayout
+           android:id="@+id/all_Indicator_Strat"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
        <TextView
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
@@ -120,7 +125,6 @@
            android:text="Lihat Semua"
            android:textColor="@color/white"
            android:textSize="10dp"
-
            android:layout_toLeftOf="@+id/bttInStratAll"
            />
         <Button
@@ -137,6 +141,7 @@
             android:textSize="15dp"
             >
         </Button>
+       </RelativeLayout>
     </RelativeLayout>
 
     <LinearLayout

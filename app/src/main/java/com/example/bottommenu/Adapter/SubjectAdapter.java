@@ -230,12 +230,12 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.BrsViewH
         public BrsViewHolderAdapter(@NonNull View itemView) {
             super(itemView);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "Test Click", Toast.LENGTH_SHORT).show();
-                }
-            });
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Toast.makeText(v.getContext(), "Test Click", Toast.LENGTH_SHORT).show();
+//                }
+//            });
             nmSubject=(TextView)itemView.findViewById(R.id.nmSubject);
             imageButtonSubject=(ImageButton) itemView.findViewById(R.id.iconData);
             containerIconSubject=(RelativeLayout) itemView.findViewById(R.id.ContainerIconData);

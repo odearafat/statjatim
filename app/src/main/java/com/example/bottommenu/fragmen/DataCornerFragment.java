@@ -1,6 +1,7 @@
 package com.example.bottommenu.fragmen;
 
 import android.app.DownloadManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.bottommenu.HelperClass.MyWebViewClient;
 import com.example.bottommenu.R;
 import com.example.bottommenu.activity.MainActivity;
 
@@ -112,8 +114,10 @@ public class DataCornerFragment extends Fragment {
         wv_data_corner.getSettings().setLoadWithOverviewMode(true);
         wv_data_corner.getSettings().setUseWideViewPort(true);
 
-
-        wv_data_corner.setWebViewClient(new WebViewClient());
+        ProgressDialog pd= new ProgressDialog(mainActivity.getWindow().getContext());
+        pd.setMessage("Mohon Menunggu. . .");
+        pd.show();
+        wv_data_corner.setWebViewClient(new MyWebViewClient(pd));
         wv_data_corner.loadUrl("http://124.158.151.235:7777/elastic/");
 
         wv_data_corner.setDownloadListener(new DownloadListener() {

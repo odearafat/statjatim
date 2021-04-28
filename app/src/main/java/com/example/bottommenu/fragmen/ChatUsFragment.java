@@ -1,5 +1,6 @@
 package com.example.bottommenu.fragmen;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,6 +12,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 
+import com.example.bottommenu.HelperClass.MyWebViewClient;
 import com.example.bottommenu.R;
 import com.example.bottommenu.activity.MainActivity;
 
@@ -87,7 +89,11 @@ public class ChatUsFragment extends Fragment {
                 //Enable Javasript Webview
         wv_davita.getSettings().setJavaScriptEnabled(true);
 
-        wv_davita.setWebViewClient(new WebViewClient());
+        ProgressDialog pd= new ProgressDialog(mainActivity.getWindow().getContext());
+        pd.setMessage("Mohon Menunggu. . .");
+        pd.show();
+        wv_davita.setWebViewClient(new MyWebViewClient(pd));
+
         wv_davita.loadUrl("https://webapps.bps.go.id/chat/index.php/idn/chat/startchat/(leaveamessage)/true/(theme)/2/(department)/243/(vid)/5e3098ba6610c6636ecc/(hash_resume)/56863_58d60d38e9c72b425769708a97c8c5ed8641102b/(er)/1?URLReferer=%2F%2Fjatim.bps.go.id%2F%23&tzuser=8");
 
 

@@ -62,7 +62,7 @@ public class DataStaticAdapter extends RecyclerView.Adapter<DataStaticAdapter.Da
 
         this.DataStaticItemList=DataStaticLists;
         context=ct;
-        downloadFile=new DownloadFile(ct);
+        downloadFile=new DownloadFile(ct, mainActivity, "Tabel");
         this.mainActivity=mainActivity;
 
         this.dialogDetailDataStatic=dialogDetailDataStatic;

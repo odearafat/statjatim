@@ -61,7 +61,7 @@ public class BrsAdapter extends RecyclerView.Adapter<BrsAdapter.BrsViewHolderAda
 
         this.BrsItemList=BrsItemLists;
         context=ct;
-        downloadFile=new DownloadFile(ct);
+        downloadFile=new DownloadFile(ct,mainActivity, "BRS");
         this.mainActivity=mainActivity;
 
         this.dialogDetailBrs=dialogDetailBrs;

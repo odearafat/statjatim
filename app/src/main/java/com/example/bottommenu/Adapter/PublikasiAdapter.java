@@ -216,12 +216,12 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Publ
             }else{
                 //Permission Granted, Perform Download
                 String filename=publikasiItemList.get(position).getTitle()+".pdf";
-                downloadfile(filename,publikasiItemList.get(position).getPdf());
+                downloadfile(filename.replaceAll("[\\\\/:*?\"<>|]", " "),publikasiItemList.get(position).getPdf());
             }
         }else{
             //System OS is less than marsmallow, perform download
             String filename=publikasiItemList.get(position).getTitle()+".pdf";
-            downloadfile(filename,publikasiItemList.get(position).getPdf());
+            downloadfile(filename.replaceAll("[\\\\/:*?\"<>|]", " "),publikasiItemList.get(position).getPdf());
         }
     }
 
@@ -234,7 +234,7 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Publ
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI |
                 DownloadManager.Request.NETWORK_MOBILE);
 
-        request.setTitle(filename);//Set Title in Download Notification
+        request.setTitle(filename.replaceAll("[\\\\/:*?\"<>|]", " "));//Set Title in Download Notification
         request.setDescription("Download Publikasi . .");//Set Description in Download Notification
 
         request.allowScanningByMediaScanner();
@@ -244,6 +244,9 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Publ
         //get download service and enque file
         DownloadManager manager =(DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         manager.enqueue(request);
+
+        mainActivity.getTvDownloadStatusHeading().setText("Publikasi Telah Didownload");
+        mainActivity.getDownloadStatus().show();
        
     }
 

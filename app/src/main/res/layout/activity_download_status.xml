@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bttn_white"
+    tools:context=".activity.MainActivity"
+    android:paddingRight="30dp"
+    android:paddingLeft="30dp">
+
+    <ImageView
+        android:id="@+id/icon_download_status"
+        android:layout_width="150dp"
+        android:layout_marginTop="20dp"
+        android:layout_height="150dp"
+        android:background="@drawable/ic_download_sukses"
+        android:layout_centerHorizontal="true"></ImageView>
+
+    <TextView
+        android:id="@+id/tv_download_status_heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="Publikasi Telah Didownload"
+        android:textSize="13dp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/green"
+        android:layout_below="@id/icon_download_status"
+        android:layout_centerHorizontal="true"
+        ></TextView>
+    <TextView
+        android:id="@+id/tv_download_status_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:text="silahkan cek di notifikasi atau direktori download"
+        android:textSize="10dp"
+        android:textAlignment="center"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/green"
+        android:layout_below="@id/tv_download_status_heading"
+        android:layout_centerHorizontal="true"
+        ></TextView>
+
+</RelativeLayout>
