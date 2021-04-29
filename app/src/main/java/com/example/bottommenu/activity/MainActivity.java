@@ -31,7 +31,7 @@ import com.luseen.spacenavigation.SpaceItem;
 import com.luseen.spacenavigation.SpaceNavigationView;
 import com.luseen.spacenavigation.SpaceOnClickListener;
 
-public class MainActivity<selectedFragment> extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     SpaceNavigationView navigationView;
     FragmentManager fm;
@@ -187,20 +187,52 @@ public class MainActivity<selectedFragment> extends AppCompatActivity {
             if (homePressed) {
                 if (doubleBackToExitPressedOnce) {
                    super.onBackPressed();
-                    if(fm.getFragments().get(0).getClass()==PublikasiFragment.class){
-                        navigationView.changeCurrentItem(0);
-                    }else if(fm.getFragments().get(0).getClass()==BeritaFragment.class){
-                        navigationView.changeCurrentItem(1);
-                    }else if(fm.getFragments().get(0).getClass()==BrsFragment.class){
-                        navigationView.changeCurrentItem(2);
-                    }else if(fm.getFragments().get(0).getClass()==DataFragment.class){
-                        navigationView.changeCurrentItem(3);
-                    }else{
-                        navigationView.changeCurrentItem(-1);
-                    }
+                   if(fm.getFragments().size()>0){
+                        if(fm.getFragments().get(0).getClass()==PublikasiFragment.class){
+                            navigationView.changeCurrentItem(0);
+                        }else if(fm.getFragments().get(0).getClass()==BeritaFragment.class){
+                            navigationView.changeCurrentItem(1);
+                        }else if(fm.getFragments().get(0).getClass()==BrsFragment.class){
+                            navigationView.changeCurrentItem(2);
+                        }else if(fm.getFragments().get(0).getClass()==DataFragment.class){
+                            navigationView.changeCurrentItem(3);
+                        }else{
+                            navigationView.changeCurrentItem(-1);
+                        }
+                   }
                     return;
                 }
 
+                this.doubleBackToExitPressedOnce = true;
+                Toast.makeText(this, "Klik Back Lagi Untuk Menutup Aplikasi", Toast.LENGTH_SHORT).show();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        doubleBackToExitPressedOnce = false;
+                    }
+                }, 2000);
+            } else {
+                homePressed = true;
+
+            }
+        }
+        //some fragments are there.. so allow the back press action
+        else {
+            //System.out.println("aa :"+fm.);
+            super.onBackPressed();
+            if(fm.getFragments().size()>0){
+                if(fm.getFragments().get(0).getClass()==PublikasiFragment.class){
+                    navigationView.changeCurrentItem(0);
+                }else if(fm.getFragments().get(0).getClass()==BeritaFragment.class){
+                    navigationView.changeCurrentItem(1);
+                }else if(fm.getFragments().get(0).getClass()==BrsFragment.class){
+                    navigationView.changeCurrentItem(2);
+                }else if(fm.getFragments().get(0).getClass()==DataFragment.class){
+                    navigationView.changeCurrentItem(3);
+                }else{
+                    navigationView.changeCurrentItem(-1);
+                }
+            }else{
                 this.doubleBackToExitPressedOnce = true;
                 Toast.makeText(this, "Klik Back Lagi Untuk Menutup Aplikasi", Toast.LENGTH_SHORT).show();
 
@@ -210,26 +242,7 @@ public class MainActivity<selectedFragment> extends AppCompatActivity {
                         doubleBackToExitPressedOnce = false;
                     }
                 }, 2000);
-            } else {
-                homePressed = true;
             }
-        }
-        //some fragments are there.. so allow the back press action
-        else {
-            //System.out.println("aa :"+fm.);
-            super.onBackPressed();
-            if(fm.getFragments().get(0).getClass()==PublikasiFragment.class){
-                navigationView.changeCurrentItem(0);
-            }else if(fm.getFragments().get(0).getClass()==BeritaFragment.class){
-                navigationView.changeCurrentItem(1);
-            }else if(fm.getFragments().get(0).getClass()==BrsFragment.class){
-                navigationView.changeCurrentItem(2);
-            }else if(fm.getFragments().get(0).getClass()==DataFragment.class){
-                navigationView.changeCurrentItem(3);
-            }else{
-                navigationView.changeCurrentItem(-1);
-            }
-
         }
     }
 
