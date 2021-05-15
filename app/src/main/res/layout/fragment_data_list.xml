@@ -129,5 +129,14 @@
         android:layout_centerVertical="true"
         android:visibility="gone"
         ></ProgressBar>
+    <ImageView
+        android:id="@+id/iv_not_found"
+        android:layout_width="300dp"
+        android:layout_height="278.1dp"
+        android:layout_marginTop="80dp"
+        android:visibility="gone"
+        android:layout_below="@id/relativeLayout0"
+        android:background="@drawable/ic_not_found"
+        android:layout_centerInParent="true"></ImageView>
 
 </RelativeLayout>

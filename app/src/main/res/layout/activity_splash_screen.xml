@@ -10,7 +10,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/ic_ss_logo"
-        android:layout_centerInParent="true"></ImageView>
+        android:layout_centerHorizontal="true"
+       android:layout_alignParentBottom="true"
+        android:layout_marginBottom="300dp"
+    ></ImageView>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,9 +21,20 @@
         android:layout_alignParentRight="true"
         android:background="@drawable/ic_ss_daun_atas"
         ></ImageView>
+
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/logoBps"
+        android:layout_width="270.369dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/ic_logo_nama_bps"
+        ></ImageView>
+    <ImageView
+        android:id="@+id/daun_bawah"
+        android:layout_width="100dp"
+        android:layout_height="79.2dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:background="@drawable/ic_ss_daun_bawah"

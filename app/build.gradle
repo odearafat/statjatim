@@ -4,7 +4,7 @@ android {
     compileSdkVersion 29
 
     defaultConfig {
-        applicationId "com.example.bottommenu"
+        applicationId "com.bps_jatim_3500.statistik_jatim"
         minSdkVersion 22
         targetSdkVersion 29
         versionCode 1

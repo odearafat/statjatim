@@ -203,6 +203,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/containerapp"
         android:layout_marginBottom="5dp"
+        android:scrollbars="none"
         >
         <RelativeLayout
             android:layout_width="wrap_content"
