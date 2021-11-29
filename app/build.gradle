@@ -44,4 +44,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.google.code.gson:gson:2.8.6'
 
+    //Google SignIn SSO
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+
 }

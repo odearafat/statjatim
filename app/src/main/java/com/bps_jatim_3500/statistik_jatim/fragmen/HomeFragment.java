@@ -13,7 +13,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -31,6 +33,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 
+import com.bps_jatim_3500.statistik_jatim.Adapter.LoadImage;
+import com.bps_jatim_3500.statistik_jatim.HelperClass.LoginAndAuthHandler;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.bps_jatim_3500.statistik_jatim.Adapter.HomeAdapter;
@@ -41,6 +45,13 @@ import com.bps_jatim_3500.statistik_jatim.interfacePackage.IndikatorStrategisHol
 import com.bps_jatim_3500.statistik_jatim.model.IndikatorStrategis;
 import com.bps_jatim_3500.statistik_jatim.model.IndikatorStrategisItem;
 import com.bps_jatim_3500.statistik_jatim.model.Page;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -52,6 +63,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.content.ContentValues.TAG;
 
 public class HomeFragment extends Fragment {
 
@@ -65,8 +78,6 @@ public class HomeFragment extends Fragment {
     public HomeFragment( MainActivity mainActivity) {
         this.mainActivity=mainActivity;
         this.fm=mainActivity.getFm();
-
-
     }
 
     enum LayoutManagerType {
@@ -83,11 +94,14 @@ public class HomeFragment extends Fragment {
     List<IndikatorStrategisItem>indikatorStrategisItems;
     IndikatorStrategisHolderApi indikatorStrategisHolderApi;
     String getResult="Null";
-    ImageButton settingButton, helpButton;
+    ImageButton  helpButton;
+    RelativeLayout settingButton;
     ImageButton imgBttDavita;
     ImageButton imgBttChatUs;
     ImageButton imgBttDataCorner;
     RelativeLayout allIndicatorStrat;
+    TextView nmPengguna, nmSelamatDatang;
+    LoginAndAuthHandler loginAndAuthHandler;
 
     //help Asstes
     Dialog dialogHelpSlider, dialogLogin;
@@ -104,7 +118,12 @@ public class HomeFragment extends Fragment {
 
     int allPageNumber;
 
-
+    //Google SignIn
+    GoogleSignInClient mGoogleSignInClient;
+    int RC_SIGN_IN=0;
+    Button logoutButton;
+    ImageView no_profile_pict,with_profile_pict_iv, imgFotoProfile;
+    TextView with_profile_pict_tv, loginHeadingTv, emailLoginTv;
 
     @Nullable
     @Override
@@ -165,18 +184,71 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        //Dialog pilih Wilayah handler
+        //Dialog Login Handler
         dialogLogin=new Dialog(mainActivity.getWindow().getContext());
         dialogLogin.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialogLogin.setContentView(R.layout.activity_login);
+        dialogLogin.setContentView(R.layout.activity_login_profil);
+        logoutButton=dialogLogin.findViewById(R.id.log_out_button);
+        imgFotoProfile=dialogLogin.findViewById(R.id.img_foto_profile);
+        loginHeadingTv=dialogLogin.findViewById(R.id.loginHeadingTv);
+        emailLoginTv=dialogLogin.findViewById(R.id.emailLoginTv);
+        //loginAndAuthHandler=new LoginAndAuthHandler(mainActivity, dialogLogin, this);
+
+        //SSO Google Handler
+        nmPengguna=v.findViewById(R.id.nm_pengguna_bawah);
+        nmSelamatDatang=v.findViewById(R.id.nm_pengguna_atas);
+        no_profile_pict=v.findViewById(R.id.no_profile_pict);
+        with_profile_pict_iv=v.findViewById(R.id.with_profile_pict_iv);
+        with_profile_pict_tv=v.findViewById(R.id.with_profile_pict_tv);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        //Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(mainActivity,gso);
+        //loginAndAuthHandler.loginClick();
+
+        if(mainActivity.getAcct()!=null){
+            if(!mainActivity.getAcct().getFamilyName().equals("null")){
+                nmPengguna.setText(mainActivity.getAcct().getFamilyName());
+                with_profile_pict_tv.setText(mainActivity.getAcct().getEmail().substring(0,1).toUpperCase());
+            }else{
+                String [] namaString=mainActivity.getAcct().getEmail().split("@");
+                nmPengguna.setText(namaString[0]);
+                with_profile_pict_tv.setText(namaString[0].substring(0,1).toUpperCase());
+            }
+            nmSelamatDatang.setText("Selamat Datang");
+            no_profile_pict.setVisibility(View.GONE);
+            with_profile_pict_iv.setVisibility(View.VISIBLE);
+            with_profile_pict_tv.setVisibility(View.VISIBLE);
+            setFoto(mainActivity.getAcct());
+
+        }else{
+            nmPengguna.setText("");
+            nmSelamatDatang.setText("");
+            no_profile_pict.setVisibility(View.VISIBLE);
+            with_profile_pict_iv.setVisibility(View.GONE);
+            with_profile_pict_tv.setVisibility(View.GONE);
+        }
 
         settingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogLogin.show();
+                if(mainActivity.getAcct()!=null){
+                    dialogLogin.show();
+                }else{
+                    signIn();
+                }
             }
         });
 
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut();
+            }
+        });
 
         // LinearLayoutManager is used here, this will layout the elements in a similar fashion
         // to the way ListView would layout elements. The RecyclerView.LayoutManager defines how
@@ -215,7 +287,6 @@ public class HomeFragment extends Fragment {
         imgBttDavita.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //So you can get the edittext value
                 String mobileNumber = "82162900900";
                 String message = "halo";
@@ -227,16 +298,7 @@ public class HomeFragment extends Fragment {
                 }else {
                     Toast.makeText(v.getContext(), "Whats app not installed on your device", Toast.LENGTH_SHORT).show();
                 }
-
             }
-
-//                AppCompatActivity activity=(AppCompatActivity) v.getContext();
-//                activity.getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.fragmen_container,
-//                                new DavitaFragment()).commit();
-
- //           }
         });
 
 
@@ -265,6 +327,86 @@ public class HomeFragment extends Fragment {
         });
 
         return v;
+    }
+
+
+    //SSO Google
+    private void signIn() {
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+    private void signOut() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(mainActivity, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        nmPengguna.setText("");
+                        nmSelamatDatang.setText("");
+                        no_profile_pict.setVisibility(View.VISIBLE);
+                        with_profile_pict_iv.setVisibility(View.GONE);
+                        with_profile_pict_tv.setVisibility(View.GONE);
+                        mainActivity.setAcct(null);
+                        dialogLogin.dismiss();
+                    }
+                });
+    }
+    public void setFoto(GoogleSignInAccount account){
+        if(account.getPhotoUrl()!=null){
+            with_profile_pict_iv.setClipToOutline(true);
+            new LoadImage(with_profile_pict_iv).execute(mainActivity.getAcct().getPhotoUrl().toString());
+            with_profile_pict_tv.setVisibility(View.GONE);
+
+            imgFotoProfile.setClipToOutline(true);
+            new LoadImage(imgFotoProfile).execute(mainActivity.getAcct().getPhotoUrl().toString());
+            loginHeadingTv.setText(mainActivity.getAcct().getDisplayName());
+            emailLoginTv.setText(mainActivity.getAcct().getEmail());
+        }else{
+            with_profile_pict_iv.setBackgroundResource(R.drawable.bg_bttn_white);
+            with_profile_pict_iv.setImageDrawable(null);
+            with_profile_pict_tv.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            //if(mainActivity.getAcct()!=null){
+                dialogLogin.show();
+                GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+                mainActivity.setAcct(account);
+                if(!account.getFamilyName().equals("null")){
+                    nmPengguna.setText(account.getFamilyName());
+                    with_profile_pict_tv.setText(account.getEmail().substring(0,1).toUpperCase());
+                }else{
+                    String [] namaString=account.getEmail().split("@");
+                    nmPengguna.setText(namaString[0]);
+                    with_profile_pict_tv.setText(namaString[0].substring(0,1).toUpperCase());
+                }
+                nmSelamatDatang.setText("Selamat Datang");
+                no_profile_pict.setVisibility(View.GONE);
+                with_profile_pict_iv.setVisibility(View.VISIBLE);
+                with_profile_pict_tv.setVisibility(View.VISIBLE);
+                setFoto(account);
+            //}
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            //updateUI(null);
+            System.out.println("Gagal");
+        }
     }
 
     //Create method appInstalledOrNot

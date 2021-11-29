@@ -47,17 +47,62 @@
             android:layout_below="@id/stat"
             android:layout_marginLeft="15dp">
         </ImageView>
+
         </RelativeLayout>
-        <ImageButton
+        <TextView
+            android:id="@+id/nm_pengguna_atas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/settingButton"
+            android:layout_marginTop="17dp"
+            android:layout_marginRight="3dp"
+            android:textColor="@color/white"
+            android:textSize="8dp"
+            android:textAlignment="textEnd"
+            android:text="Selamat Datang"/>
+        <TextView
+            android:id="@+id/nm_pengguna_bawah"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/settingButton"
+            android:layout_below="@+id/nm_pengguna_atas"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="-3dp"
+            android:textColor="@color/orange"
+            android:textStyle="bold"
+            android:text="Arafat"/>
+        <RelativeLayout
             android:id="@+id/settingButton"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignParentRight="true"
             android:layout_marginTop="20dp"
-            android:layout_marginRight="50dp"
+            android:layout_marginRight="50dp">
+        <ImageView
+            android:id="@+id/no_profile_pict"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:backgroundTint="@color/white"
-            android:alpha=".1"
+            android:layout_centerInParent="true"
             android:background="@drawable/ic_login_button"/>
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/with_profile_pict_iv"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/bg_bttn_white"/>
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/with_profile_pict_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="J"
+            android:textSize="11dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_centerInParent="true"
+            android:textStyle="bold" />
+        </RelativeLayout>
 
         <ImageButton
             android:id="@+id/helpButton"

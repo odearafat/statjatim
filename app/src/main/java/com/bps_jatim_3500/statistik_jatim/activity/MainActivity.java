@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -20,6 +21,8 @@ import com.bps_jatim_3500.statistik_jatim.fragmen.BrsFragment;
 import com.bps_jatim_3500.statistik_jatim.fragmen.DataFragment;
 import com.bps_jatim_3500.statistik_jatim.fragmen.HomeFragment;
 import com.bps_jatim_3500.statistik_jatim.fragmen.PublikasiFragment;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.luseen.spacenavigation.SpaceItem;
 import com.luseen.spacenavigation.SpaceNavigationView;
 import com.luseen.spacenavigation.SpaceOnClickListener;
@@ -39,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
     ImageView iconDownloadStatus;
     TextView tvDownloadStatusHeading, tvDownloadStatusDetail;
 
+    //Google Signin
+    GoogleSignInAccount acct;
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -55,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
         //declare Navigation View
         navigationView=findViewById(R.id.space);
 
+        //Google Signin
+        acct = GoogleSignIn.getLastSignedInAccount(this);
+        //System.out.println("acc: "+getAcct().getDisplayName());
+
         //Check Internet Connection
         internetConnectionCheck=new InternetConnectionCheck(mainActivity);
         internetConnectionCheck.isConnected();
@@ -63,6 +73,23 @@ public class MainActivity extends AppCompatActivity {
         fm.beginTransaction()
                 .replace(R.id.fragmen_container,new HomeFragment(this))
                 .commit();
+
+
+//        if (acct != null) {
+//            String personName = acct.getDisplayName();
+//            String personGivenName = acct.getGivenName();
+//            String personFamilyName = acct.getFamilyName();
+//            String personEmail = acct.getEmail();
+//            String personId = acct.getId();
+//            Uri personPhoto = acct.getPhotoUrl();
+//
+//            System.out.println(personName);
+//            System.out.println(personGivenName);
+//            System.out.println(personFamilyName);
+//            System.out.println(personEmail);
+//            System.out.println(personId);
+//            System.out.println(personPhoto);
+//        }
 
         //Dialog pilih Wilayah handler
         dialogPilihWilayah=new Dialog(MainActivity.this);
@@ -220,6 +247,15 @@ public class MainActivity extends AppCompatActivity {
             }
     }
 
+    public GoogleSignInAccount getAcct() {
+        return acct;
+    }
+
+
+    public void setAcct(GoogleSignInAccount acct) {
+        this.acct = acct;
+    }
+
     public FragmentManager getFm() {
         return fm;
     }
@@ -259,6 +295,7 @@ public class MainActivity extends AppCompatActivity {
     public void setSelectedFragment(Fragment selectedFragment) {
         this.selectedFragment = selectedFragment;
     }
+
 
     public SpaceNavigationView getNavigationView() {
         return navigationView;
