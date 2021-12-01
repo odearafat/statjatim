@@ -80,6 +80,8 @@ public class HomeFragment extends Fragment {
         this.fm=mainActivity.getFm();
     }
 
+
+
     enum LayoutManagerType {
         GRID_LAYOUT_MANAGER,
         LINEAR_LAYOUT_MANAGER
