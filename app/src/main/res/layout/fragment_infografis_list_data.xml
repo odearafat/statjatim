@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_margin="20dp"
+        android:padding="10dp"
+        android:background="@drawable/bg_data_list"
+        android:elevation="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/cover"
+            android:layout_height="500dp"
+            android:layout_width="350dp"
+            android:background="@drawable/bg_circle_blue_big"
+            android:layout_margin="5dp"
+            android:scaleType="centerCrop"
+            android:layout_centerHorizontal="true"
+            />
+
+        <TextView
+            android:id="@+id/judulPublikasi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cover"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:textAlignment="center"
+            android:text="Provinsi Jawa Timur Dalam Angka 2020"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tanggalRilis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="25 Maret 2020"
+            android:textSize="12dp"
+            android:textStyle="italic"
+            android:layout_below="@id/judulPublikasi"
+            android:layout_toRightOf="@id/cover"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/orange"
+            android:visibility="gone"
+        />
+        <RelativeLayout
+            android:id="@+id/titik"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:background="@drawable/bg_circle_blue_small"
+            android:layout_toRightOf="@id/tanggalRilis"
+            android:layout_below="@id/judulPublikasi"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:visibility="gone"
+            >
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/ukuranFile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="28 MB"
+            android:textSize="12dp"
+            android:textStyle="italic"
+            android:layout_toRightOf="@id/titik"
+            android:layout_below="@id/judulPublikasi"
+            android:textColor="@color/orange"
+            android:visibility="gone"
+            />
+
+        <Button
+            android:id="@+id/bttUnduhPub"
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:text="Unduh"
+            android:layout_below="@id/tanggalRilis"
+            android:layout_toRightOf="@id/cover"
+            android:background="@drawable/bg_circle_orange_small"
+            android:textColor="@color/white"
+            android:layout_margin="8dp"
+            android:textSize="12dp"
+            android:visibility="gone"
+            >
+        </Button>
+
+        <Button
+            android:id="@+id/bttDetailPub"
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:text="Detail"
+            android:layout_below="@id/tanggalRilis"
+            android:layout_toRightOf="@id/bttUnduhPub"
+            android:background="@drawable/bg_circle_blue_small"
+            android:textColor="@color/white"
+            android:layout_margin="8dp"
+            android:textSize="12dp"
+            android:visibility="gone"
+            >
+        </Button>
+    </RelativeLayout>
+
+</RelativeLayout>

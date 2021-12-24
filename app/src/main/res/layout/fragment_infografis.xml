@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:id="@+id/pubViewName"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        >
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="54.749dp"
+            android:background="@drawable/ic_daun_bar"
+            android:layout_alignParentRight="true"></ImageView>
+
+        <ImageButton
+            android:id="@+id/buttonBackPublikasi"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/ic_baseline_keyboard_arrow_left_24"
+            >
+        </ImageButton>
+
+        <TextView
+            android:id="@+id/txt_bar_pub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/buttonBackPublikasi"
+            android:text="Infografis"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+        <ImageButton
+            android:id="@+id/btt_set_publikasi"
+            android:layout_width="5dp"
+            android:layout_height="19dp"
+            android:background="@drawable/ic_three_circle"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp"
+            android:layout_centerVertical="true"
+            ></ImageButton>
+        <RelativeLayout
+            android:id="@+id/containerWilayahPublikasi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_bar_pub"
+            android:layout_toRightOf="@+id/buttonBackPublikasi"
+            android:background="@drawable/bg_dark_blue_big_circle"
+            >
+            <ImageView
+                android:id="@+id/img_location"
+                android:layout_width="8dp"
+                android:layout_height="11.13dp"
+                android:background="@drawable/ic_location"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_centerVertical="true"
+                ></ImageView>
+            <TextView
+                android:id="@+id/txt_wilayah_publikasi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:textSize="9dp"
+                android:text="Provinsi Jawa Timur"
+                android:layout_toRightOf="@id/img_location"
+                android:textColor="@color/white"
+                android:layout_centerVertical="true"
+                ></TextView>
+        </RelativeLayout>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/relativeLayout0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pubViewName"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone"
+        >
+
+        <EditText
+            android:id="@+id/editTextFindPub"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="20dp"
+            android:hint="Cari Publikasi.."
+            android:textColorHint="@color/white_with_alpha"
+            android:textColor="@color/colorPrimaryDark"
+            android:background="@drawable/bg_blue_search_text_field"
+            />
+        <Button
+            android:id="@+id/bttFindPub"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:text="Cari"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_dark_blue_btt_search"
+            />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/linear_layout"
+        android:layout_below="@id/relativeLayout0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RecycleViewListPublikasi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>>
+    <ProgressBar
+        android:id="@+id/progressBarPub"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        ></ProgressBar>
+
+</RelativeLayout>

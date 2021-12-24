@@ -101,6 +101,7 @@ public class HomeFragment extends Fragment {
     ImageButton imgBttDavita;
     ImageButton imgBttChatUs;
     ImageButton imgBttDataCorner;
+    ImageButton imgBttInfografis;
     RelativeLayout allIndicatorStrat;
     TextView nmPengguna, nmSelamatDatang;
     LoginAndAuthHandler loginAndAuthHandler;
@@ -151,9 +152,10 @@ public class HomeFragment extends Fragment {
 
 
         //Button untuk AppBPS
-        imgBttDavita= v.findViewById(R.id.bttDavita);
-        imgBttChatUs= v.findViewById(R.id.bttChatUs);
-        imgBttDataCorner= v.findViewById(R.id.bttDataCorner);
+        imgBttDavita= v.findViewById(R.id.iv_btt_virtualassistant);
+        imgBttChatUs= v.findViewById(R.id.iv_btt_chatus);
+        imgBttDataCorner= v.findViewById(R.id.iv_btt_data_corner);
+        imgBttInfografis= v.findViewById(R.id.iv_btt_infografis);
 
         //Dialog pilih Wilayah handler
         dialogHelpSlider=new Dialog(mainActivity.getWindow().getContext());
@@ -304,7 +306,7 @@ public class HomeFragment extends Fragment {
         });
 
 
-
+        //Button ChatUs Action Listener
         imgBttChatUs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -324,6 +326,17 @@ public class HomeFragment extends Fragment {
                 fm.beginTransaction().addToBackStack(null)
                         .replace(R.id.fragmen_container,
                                 new DataCornerFragment(mainActivity)).commit();
+
+            }
+        });
+
+        //Button Infografis Action Listener
+        imgBttInfografis.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fm.beginTransaction().addToBackStack(null)
+                        .replace(R.id.fragmen_container,
+                                new InfografisFragment(mainActivity)).commit();
 
             }
         });

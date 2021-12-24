@@ -3,7 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Programming/StatistikJatim/app/src/main/res/drawable/bg_blue_main.xml" value="0.1" />
+        <entry key="..\:/Programming/StatistikJatim/app/src/main/res/drawable/bg_circle_blue_big.xml" value="0.19074074074074074" />
+        <entry key="..\:/Programming/StatistikJatim/app/src/main/res/layout/fragment_berita.xml" value="0.1" />
         <entry key="..\:/Programming/StatistikJatim/app/src/main/res/layout/fragment_home.xml" value="0.1" />
+        <entry key="..\:/Programming/StatistikJatim/app/src/main/res/layout/fragment_indicator_strategis.xml" value="0.1" />
+        <entry key="..\:/Programming/StatistikJatim/app/src/main/res/layout/fragment_infografis.xml" value="0.1" />
+        <entry key="..\:/Programming/StatistikJatim/app/src/main/res/layout/fragment_infografis_list_data.xml" value="0.1" />
+        <entry key="..\:/Programming/StatistikJatim/app/src/main/res/layout/fragment_publikasi.xml" value="0.1" />
       </map>
     </option>
   </component>
